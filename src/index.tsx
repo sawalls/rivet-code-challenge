@@ -1,22 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import store from './store'
-import { Provider } from 'react-redux'
+import Root from './routes/root';
+import store from './store';
+import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
 import { fetchProfiles } from './features/profile/profileSlice';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />
+  }
+]);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-store.dispatch(fetchProfiles())
+store.dispatch(fetchProfiles());
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <RouterProvider router={router} />
     </Provider>
   </React.StrictMode>
 );

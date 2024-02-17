@@ -35,8 +35,8 @@ async function returnNetworkProfiles() {
 
 
 export const fetchProfiles = createAsyncThunk('users/fetchUsers', () => {
-  // return returnFakeProfiles();
-  return returnNetworkProfiles();
+  return returnFakeProfiles();
+  //return returnNetworkProfiles();
 })
 
 export const profileSlice = createSlice({
