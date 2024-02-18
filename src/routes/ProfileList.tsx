@@ -30,5 +30,6 @@ const ProfileList = () => {
 }
 
 // TODO: figure out how to integrate react-router Loader with profileList slice
+// maybe this involves passing in a dispatch from index.tsx?
 
 export default ProfileList;

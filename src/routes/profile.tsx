@@ -1,18 +1,18 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import { setActiveProfile, } from "../features/profile/profileSlice";
+import { setActiveProfile, currentProfile} from "../features/profile/profileSlice";
 
 function Profile () {
-    const dispatch = useDispatch();
-    const {id: routed_profile_id} = useParams();
+    const profile = useSelector(currentProfile);
+    // TODO move the dispatch into a react-router loader somehow
+    //const {id: routed_profile_id} = useParams();
 
-    console.log('routed_profile_id', routed_profile_id);
-    dispatch(setActiveProfile(routed_profile_id));
+    console.log('routed_profile_id', profile ? profile.id : 'none'); 
 
     return (
         <div>
-            <h1>Profile {routed_profile_id ? routed_profile_id : 'none'}</h1>
+            <h1>Profile {profile ? profile.id : 'none'}</h1>
         </div>
     );
 }

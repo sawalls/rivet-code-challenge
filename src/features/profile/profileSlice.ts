@@ -85,6 +85,12 @@ export const profileSlice = createSlice({
         profiles: action.payload
       }
     });
+    builder.addCase(fetchProfile.fulfilled, (state, action) => {
+      return {
+        ...state,
+        profile: action.payload
+      }
+    });
   },
 })
 
