@@ -15,7 +15,26 @@ function returnFakeProfiles() {
 }
 
 async function returnNetworkProfiles() {
-  const profiles = await fetch("https://codechallenge.rivet.work/api/v1/profile/1", {
+  const profiles = await fetch("https://codechallenge.rivet.work/api/v1/profiles", {
+    headers: {
+      "token": process.env.REACT_APP_API_TOKEN || ''
+    }
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    // do something with the data
+    return data;
+  })
+
+  console.log('got some data', profiles);
+  if (isArray(profiles)) {
+    return profiles;
+  }
+  return [profiles];
+}
+
+async function returnNetworkProfile(id: number) {
+  const profiles = await fetch("https://codechallenge.rivet.work/api/v1/profile/{number}", {
     headers: {
       "token": process.env.REACT_APP_API_TOKEN || ''
     }
@@ -35,8 +54,13 @@ async function returnNetworkProfiles() {
 
 
 export const fetchProfiles = createAsyncThunk('users/fetchUsers', () => {
-  return returnFakeProfiles();
-  //return returnNetworkProfiles();
+  //return returnFakeProfiles();
+  return returnNetworkProfiles();
+})
+
+
+export const fetchProfile = createAsyncThunk('users/fetchUser', (id: number) => {
+  return returnNetworkProfile(id);
 })
 
 export const profileSlice = createSlice({
@@ -45,7 +69,6 @@ export const profileSlice = createSlice({
   reducers: {
     setActiveProfile: (state, action) => {
       const id = action.payload;
-      console.log('should set active profile ID', action.payload);
       
       const found = state.profiles.find((item)=>item.id==id);
       state.inFocus = found || null;

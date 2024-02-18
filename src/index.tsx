@@ -6,29 +6,31 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-
 import './index.css';
-import Profile from './routes/profile';
-import Root from './routes/root';
+import Root from './routes/Root';
+import Profile from './routes/Profile';
+import ProfileList from './routes/ProfileList';
 import store from './store';
-import { fetchProfiles } from './features/profile/profileSlice';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />
+    element: <Root />,
+    children: [{
+      path: "/",
+      index: true,
+      element: <ProfileList />
+    },{
+      path: "/profile/:id",
+      element: <Profile />
+    }],
   },
-  {
-    path: "/profile/:id",
-    element: <Profile />
-  }
+
 ]);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-
-store.dispatch(fetchProfiles());
 
 root.render(
   <React.StrictMode>

@@ -1,12 +1,17 @@
 import { Box } from '@mui/material';
+import { Outlet } from "react-router-dom";
 
+import store from '../store';
 import { Status } from '../features/profile/Status';
-import { ProfileList } from '../features/profile/ProfileList';
+import { fetchProfiles } from '../features/profile/profileSlice';
+import ProfileList from './ProfileList';
 
 function Root() {
     function handleClickAdd() {
       alert('Should add another profile!')
     }
+  
+    store.dispatch(fetchProfiles());
   
     return (
       <div className="App">
@@ -27,10 +32,10 @@ function Root() {
                 ➕
               </Box>
             </Box>
-            <h1>Schala Walls Solution - Rivet Code Challenge</h1>
+            <h1>Schala Challenge Solution</h1>
           </Box>
           <Box sx={{width: '32em', boxSizing: 'border-box', padding: '.5em', margin: '0 auto', maxWidth: '100%'}}>
-            <ProfileList />
+            <Outlet />
           </Box>
           <Status></Status>
         </header>
