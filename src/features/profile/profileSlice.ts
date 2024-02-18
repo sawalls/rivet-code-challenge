@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { isArray } from 'lodash'
+
 import { ProfileState, makeFakeUserList } from './profileUtils'
 import { RootState } from '../../store';
-import { isArray } from 'lodash'
 
 const initialState = {
   profiles: [],
@@ -34,6 +35,7 @@ async function returnNetworkProfiles() {
 }
 
 async function returnNetworkProfile(id: number) {
+  // I think this might not be the case, but in imaginary-land, the full profile is bigger than the profile returned by /profiles
   const profiles = await fetch("https://codechallenge.rivet.work/api/v1/profile/{number}", {
     headers: {
       "token": process.env.REACT_APP_API_TOKEN || ''
@@ -53,13 +55,13 @@ async function returnNetworkProfile(id: number) {
 }
 
 
-export const fetchProfiles = createAsyncThunk('users/fetchUsers', () => {
+export const fetchProfiles = createAsyncThunk('users/fetchProfiles', () => {
   //return returnFakeProfiles();
   return returnNetworkProfiles();
 })
 
 
-export const fetchProfile = createAsyncThunk('users/fetchUser', (id: number) => {
+export const fetchProfile = createAsyncThunk('users/fetchProfile', (id: number) => {
   return returnNetworkProfile(id);
 })
 

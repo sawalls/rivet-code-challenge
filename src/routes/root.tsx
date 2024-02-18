@@ -4,7 +4,6 @@ import { Outlet } from "react-router-dom";
 import store from '../store';
 import { Status } from '../features/profile/Status';
 import { fetchProfiles } from '../features/profile/profileSlice';
-import ProfileList from './ProfileList';
 
 function Root() {
     function handleClickAdd() {

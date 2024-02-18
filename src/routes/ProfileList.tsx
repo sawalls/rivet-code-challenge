@@ -13,6 +13,7 @@ const ProfileList = () => {
     <Stack spacing={1} sx={{textAlign: 'left'}}>
       { profiles.length > 0 && profiles.map((profile)=>(
         <Link to={`/profile/${profile.id}`} onClick={()=>dispatch(setActiveProfile(profile.id))}>
+          {/* TODO: switch this from an onClick so that it happens w/ forward and backward in browser */}
           <Box sx={{ backgroundColor: 'white', 
                     borderRadius: '4px', 
                     overflow: 'hidden', 
@@ -27,5 +28,7 @@ const ProfileList = () => {
     </Stack>
   )
 }
+
+// TODO: figure out how to integrate react-router Loader with profileList slice
 
 export default ProfileList;
