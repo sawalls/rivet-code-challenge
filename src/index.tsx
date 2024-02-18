@@ -1,20 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import Root from './routes/root';
-import store from './store';
 import { Provider } from 'react-redux';
-import reportWebVitals from './reportWebVitals';
-import { fetchProfiles } from './features/profile/profileSlice';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 
+
+import './index.css';
+import Profile from './routes/profile';
+import Root from './routes/root';
+import store from './store';
+import { fetchProfiles } from './features/profile/profileSlice';
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />
+  },
+  {
+    path: "/profile/:id",
+    element: <Profile />
   }
 ]);
 
@@ -31,8 +37,3 @@ root.render(
     </Provider>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
