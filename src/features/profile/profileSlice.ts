@@ -5,7 +5,7 @@ import { isArray } from 'lodash'
 
 const initialState = {
   profiles: [],
-  inFocus: null
+  inFocus: null,
 } as ProfileState;
 
 function returnFakeProfiles() {
@@ -30,7 +30,7 @@ async function returnNetworkProfiles() {
   if (isArray(profiles)) {
     return profiles;
   }
-  return [profiles]
+  return [profiles];
 }
 
 
@@ -49,7 +49,8 @@ export const profileSlice = createSlice({
       
       const found = state.profiles.find((item)=>item.id==id);
       state.inFocus = found || null;
-      // state.settings.customTopics.topicsSortType.name = action.payload.name;   
+      // TODO: I do not know what the line below this is
+      // state.settings.customTopics.topicsSortType.name = action.payload.name;
     },
   },
   extraReducers(builder) {
@@ -58,14 +59,14 @@ export const profileSlice = createSlice({
         ...state,
         profiles: action.payload
       }
-    })
-  }
+    });
+  },
 })
 
 // Action creators are generated for each case reducer function
-export const { setActiveProfile } = profileSlice.actions
+export const { setActiveProfile } = profileSlice.actions;
 export const profileList = (state: RootState) => state.profile.profiles;
 export const countProfiles = (state: RootState) => state.profile.profiles.length as number;
 export const currentProfile = (state: RootState) => state.profile.inFocus;
 
-export default profileSlice.reducer
+export default profileSlice.reducer;
