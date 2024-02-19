@@ -1,19 +1,40 @@
 import { Box, Stack } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { Link } from "react-router-dom";
 
 import { ProfileLineItem } from "../features/profile/ProfileLineItem";
-import { profileList, setActiveProfile } from "../features/profile/profileSlice";
+import { profileList, fetchProfile } from "../features/profile/profileSlice";
+import { useAppDispatch } from "../store";
 
 const ProfileList = () => {
   const profiles = useSelector(profileList);
-  const dispatch = useDispatch();
+  const appDispatch = useAppDispatch();
+
+  function handleClickAdd() {
+    alert('Should add another profile!')
+  }
 
   return (
     <Stack spacing={1} sx={{textAlign: 'left'}}>
+      <Box sx={{   boxSizing: 'border-box', width: '32em', padding: '.5em', margin: '0 auto', maxWidth: '100%', position: 'absolute', left: 0, right: 0 }}>
+        <Box sx={{ border: '1px solid gray',
+                  backgroundColor: 'white', 
+                  padding: '.5em', 
+                  width: '1em', 
+                  height: '1em', 
+                  float: 'right', 
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  lineHeight: '1.2em'
+                  }}
+            onClick={()=>handleClickAdd()}>
+          Create new profile: ➕
+        </Box>
+      </Box>
       { profiles.length > 0 && profiles.map((profile)=>(
-        <Link to={`/profile/${profile.id}`} onClick={()=>dispatch(setActiveProfile(profile.id))}>
-          {/* TODO: switch this from an onClick so that it happens w/ forward and backward in browser */}
+        <Link to={`/profile/${profile.id}`} onClick={()=>appDispatch(fetchProfile(profile.id))}>
+          {/* TODO: switch this from an onClick so that it happens w/ forward and backward in browser. */}
+          {/* TODO: I think that means a react-router Loader? And maybe some middleware? */}
           <Box sx={{ backgroundColor: 'white', 
                     borderRadius: '4px', 
                     overflow: 'hidden', 

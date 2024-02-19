@@ -36,7 +36,8 @@ async function returnNetworkProfiles() {
 
 async function returnNetworkProfile(id: number) {
   // I think this might not be the case, but in imaginary-land, the full profile is bigger than the profile returned by /profiles
-  const profiles = await fetch("https://codechallenge.rivet.work/api/v1/profile/{number}", {
+  console.log('returnNetworkProfile is about to await', id)
+  const profile = await fetch(`https://codechallenge.rivet.work/api/v1/profile/${id}`, {
     headers: {
       "token": process.env.REACT_APP_API_TOKEN || ''
     }
@@ -44,14 +45,12 @@ async function returnNetworkProfile(id: number) {
   .then((response) => response.json())
   .then((data) => {
     // do something with the data
+    console.log('inside the last then', data)
     return data;
   })
 
-  console.log('got some data', profiles);
-  if (isArray(profiles)) {
-    return profiles;
-  }
-  return [profiles];
+  console.log('got some data', profile);
+  return profile;
 }
 
 
@@ -62,6 +61,7 @@ export const fetchProfiles = createAsyncThunk('users/fetchProfiles', () => {
 
 
 export const fetchProfile = createAsyncThunk('users/fetchProfile', (id: number) => {
+  console.log('fetchProfile called with', id);
   return returnNetworkProfile(id);
 })
 
@@ -69,14 +69,6 @@ export const profileSlice = createSlice({
   name: 'profiles',
   initialState,
   reducers: {
-    setActiveProfile: (state, action) => {
-      const id = action.payload;
-      
-      const found = state.profiles.find((item)=>item.id==id);
-      state.inFocus = found || null;
-      // TODO: I do not know what the line below this is
-      // state.settings.customTopics.topicsSortType.name = action.payload.name;
-    },
   },
   extraReducers(builder) {
     builder.addCase(fetchProfiles.fulfilled, (state, action) => {
@@ -88,14 +80,14 @@ export const profileSlice = createSlice({
     builder.addCase(fetchProfile.fulfilled, (state, action) => {
       return {
         ...state,
-        profile: action.payload
+        inFocus: action.payload,
       }
     });
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setActiveProfile } = profileSlice.actions;
+export const { } = profileSlice.actions;
 export const profileList = (state: RootState) => state.profile.profiles;
 export const countProfiles = (state: RootState) => state.profile.profiles.length as number;
 export const currentProfile = (state: RootState) => state.profile.inFocus;

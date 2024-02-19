@@ -1,18 +1,26 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
 
-import { setActiveProfile, currentProfile} from "../features/profile/profileSlice";
+import { currentProfile } from "../features/profile/profileSlice";
 
 function Profile () {
     const profile = useSelector(currentProfile);
-    // TODO move the dispatch into a react-router loader somehow
-    //const {id: routed_profile_id} = useParams();
+    if (!profile) {
+        // TODO make this return an error page
+        return <h1>No selected profile found</h1>;
+    }
+    // TODO move the dispatch that fills this into a react-router loader somehow
 
     console.log('routed_profile_id', profile ? profile.id : 'none'); 
+    const { first_name, last_name, phone, email, address, city, state, zip, photo, notes } = profile;
 
     return (
         <div>
-            <h1>Profile {profile ? profile.id : 'none'}</h1>
+            <h2>{first_name} {last_name}</h2>
+            <img src={photo}/>
+            <p>{address}</p>
+            <p>{city} {state} {zip}</p>
+            <p>Contact: {phone} {email}</p>
+            <p>{notes}</p>
         </div>
     );
 }
