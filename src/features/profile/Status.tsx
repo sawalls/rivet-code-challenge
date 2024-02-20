@@ -9,7 +9,7 @@ const Status = () => {
 
   return (
     <Box sx={{fontSize: '12px', color: '#888', marginTop: '1em'}}>
-      Loaded { count } profile(s). Selected profile id: {current?.id ? current.id : 'none'}
+      Loaded { count } profile(s). Last selected profile id: {current?.id ? current.id : 'none'}
     </Box>
   )
 }

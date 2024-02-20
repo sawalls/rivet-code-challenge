@@ -2,13 +2,8 @@ import { Box } from '@mui/material';
 import { Outlet } from "react-router-dom";
 
 import { Status } from '../features/profile/Status';
-import { fetchProfiles } from '../features/profile/profileSlice';
-import { useAppDispatch } from '../store';
 
-function Root() {
-    const dispatch = useAppDispatch();
-    dispatch(fetchProfiles());
-  
+function Root() {  
     return (
       <div className="App">
         <header className="App-header" style={{textAlign: 'center'}}>
