@@ -1,6 +1,6 @@
 # Schala Walls's RIVET coding challenge solution
 
-This is a partially completed solution to the coding challenge given to me by Alan. It's a CRA app so all the regular CRA things apply.
+This is a partially completed solution to the coding challenge given to me by Alan et al. It's a CRA app so all the regular CRA things apply.
 
 It's always very important to me that browser history and URLs function correctly even in a single page app, so I've made use of [React Router](https://reactrouter.com/en/main). That led to some pretty specific implementation details so feel free to ask any questions.
 
