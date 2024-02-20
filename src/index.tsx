@@ -49,7 +49,7 @@ function AppRouterProvider() {
       {
         path: "/profile/:id/edit",
         element: <ProfileEdit />,
-        //TODO have a loader here
+        // TODO have a loader here
         action: async ({ request, params }) => {
           const formData = await request.formData();
           const { id } = params;
@@ -65,14 +65,14 @@ function AppRouterProvider() {
         },
       },
       {
-        path: "/profile/new",
+        path: "/profile/create",
         element: <ProfileCreate />,
         action: async ({ request }) => {
           const formData = await request.formData();
           console.log('form data', formData);
           const profile = Object.fromEntries(formData.entries());
           console.log('objectized form data', profile);
-          // TODO get rid of return null. Also redirect to the new profile
+          // TODO redirect to the new profile instead of the index
           console.log(appDispatch(createProfile(profile)));
           return redirect("/");
         },

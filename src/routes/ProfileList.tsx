@@ -8,27 +8,22 @@ import { profileList } from "../features/profile/profileSlice";
 const ProfileList = () => {
   const profiles = useSelector(profileList);
 
-  function handleClickAdd() {
-    alert('Should add another profile!')
-  }
-
   return (
     <Stack spacing={1} sx={{textAlign: 'left'}}>
-      <Box sx={{   boxSizing: 'border-box', width: '32em', padding: '.5em', margin: '0 auto', maxWidth: '100%', position: 'absolute', left: 0, right: 0 }}>
-        <Box sx={{ border: '1px solid gray',
-                  backgroundColor: 'white', 
-                  padding: '.5em', 
-                  width: '1em', 
-                  height: '1em', 
-                  float: 'right', 
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  lineHeight: '1.2em'
-                  }}
-            onClick={()=>handleClickAdd()}>
-          Create new profile: ➕
+      <Link to={"/profile/create"}>
+        <Box sx={{   boxSizing: 'border-box', }}>
+          <Box sx={{ border: '1px solid gray',
+                    backgroundColor: 'white', 
+                    padding: '.5em', 
+                    height: '1em', 
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    lineHeight: '1.2em',
+                    }}>
+            Create new profile: ➕
+          </Box>
         </Box>
-      </Box>
+      </Link>
       { profiles.length > 0 && profiles.map((profile)=>(
         <Link to={`/profile/${profile.id}`} key={profile.id}>
           <Box sx={{ backgroundColor: 'white', 
