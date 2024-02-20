@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { currentProfile } from "../features/profile/profileSlice";
 
@@ -12,15 +13,15 @@ function Profile () {
     console.log('routed_profile_id', profile ? profile.id : 'none'); 
     const { first_name, last_name, phone, email, address, city, state, zip, photo, notes } = profile;
 
-    // TODO add a button to edit the profile
     return (
         <div>
             <h2>{first_name} {last_name}</h2>
+            <p><Link to={`/profile/${profile.id}/edit`}>Edit this profile</Link></p>
             <img src={photo}/>
             <p>{address}</p>
             <p>{city} {state} {zip}</p>
             <p>Contact: {phone} {email}</p>
-            <p>{notes}</p>
+            <p>Notes: {notes}</p>
         </div>
     );
 }
