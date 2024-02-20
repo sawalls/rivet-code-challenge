@@ -5,7 +5,7 @@ import {
 
 // TODO: parameterize this with HTMLFormMethod or something to get POST/PUT in same component
 function ProfileForm () {
-    const { id } = useParams();
+    //TODO use selector to get default values from currently selected profile
     return (
         <Form method="put" id="profile-form">
         {/*<Form method="post" id="profile-form">*/}
