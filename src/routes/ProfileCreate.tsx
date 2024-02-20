@@ -4,11 +4,10 @@ import {
 } from "react-router-dom";
 
 // TODO: parameterize this with HTMLFormMethod or something to get POST/PUT in same component
-function ProfileForm () {
+function ProfileCreate () {
     //TODO use selector to get default values from currently selected profile
     return (
-        <Form method="put" id="profile-form">
-        {/*<Form method="post" id="profile-form">*/}
+        <Form method="post" id="profile-create">
             <p>
                 <span>Name</span>
                 <input placeholder="First Name" type="text" name="first_name" required />
@@ -53,15 +52,14 @@ function ProfileForm () {
             <p>
                 <label>
                     <span>Notes</span>
-                    <textarea placeholder="fakeurl.fictitious.example/photo.jpg" name="notes" required/>
+                    <textarea placeholder="Your freeform notes go here" name="notes" required/>
                 </label>
             </p>
             <p>
-                {/*<button type="submit">Create</button>*/}
-                <button type="submit">Update</button>
+                <button type="submit">Create</button>
             </p>
         </Form>
     );
 }
 
-export default ProfileForm;
+export default ProfileCreate;

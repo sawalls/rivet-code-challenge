@@ -12,7 +12,8 @@ import Root from './routes/Root';
 import Profile from './routes/Profile';
 import { createProfile, updateProfile, fetchProfile, fetchProfiles } from './features/profile/profileSlice';
 import ProfileList from './routes/ProfileList';
-import ProfileForm from './routes/ProfileForm';
+import ProfileEdit from './routes/ProfileEdit';
+import ProfileCreate from './routes/ProfileCreate';
 import store, {useAppDispatch} from './store';
 
 
@@ -47,7 +48,8 @@ function AppRouterProvider() {
       },
       {
         path: "/profile/:id/edit",
-        element: <ProfileForm />,
+        element: <ProfileEdit />,
+        //TODO have a loader here
         action: async ({ request, params }) => {
           const formData = await request.formData();
           const { id } = params;
@@ -59,22 +61,22 @@ function AppRouterProvider() {
 
           // TODO get rid of return null. Also redirect to the new profile
           console.log(appDispatch(updateProfile({id: id, profile: profile})));
-          return null;
+          return redirect(`/profile/${id}`);
         },
       },
-      // {
-      //   path: "/profile/new",
-      //   element: <ProfileForm />,
-      //   action: async ({ request, params }) => {
-      //     const formData = await request.formData();
-      //     console.log('form data', formData);
-      //     const profile = Object.fromEntries(formData.entries());
-      //     console.log('objectized form data', profile);
-      //     // TODO get rid of return null. Also redirect to the new profile
-      //     console.log(appDispatch(createProfile(blorkblorkblorknotarealvariable)));
-      //     return redirect("/");
-      //   },
-      // },
+      {
+        path: "/profile/new",
+        element: <ProfileCreate />,
+        action: async ({ request }) => {
+          const formData = await request.formData();
+          console.log('form data', formData);
+          const profile = Object.fromEntries(formData.entries());
+          console.log('objectized form data', profile);
+          // TODO get rid of return null. Also redirect to the new profile
+          console.log(appDispatch(createProfile(profile)));
+          return redirect("/");
+        },
+      },
     ],
     },
   ]);
