@@ -16,41 +16,41 @@ function returnFakeProfiles() {
 }
 
 // TODO: clean all these network requests to use try except instead of .then chaining
-async function returnNetworkProfiles() {
-  const profiles = await fetch("https://codechallenge.rivet.work/api/v1/profiles", {
-    headers: {
-      "token": process.env.REACT_APP_API_TOKEN || ''
-    }
-  })
-  .then((response) => response.json())
-  .then((data) => {
-    // do something with the data
-    return data;
-  })
+// async function returnNetworkProfiles() {
+//   const profiles = await fetch("https://codechallenge.rivet.work/api/v1/profiles", {
+//     headers: {
+//       "token": process.env.REACT_APP_API_TOKEN || ''
+//     }
+//   })
+//   .then((response) => response.json())
+//   .then((data) => {
+//     // do something with the data
+//     return data;
+//   })
 
-  console.log('got some data', profiles);
-  if (isArray(profiles)) {
-    return profiles;
-  }
-  return [profiles];
-}
+//   console.log('got some data', profiles);
+//   if (isArray(profiles)) {
+//     return profiles;
+//   }
+//   return [profiles];
+// }
 
-async function returnNetworkProfile(id: number) {
-  // I think this might not be the case, but in imaginary-land, the full profile is bigger than the profile returned by /profiles
-  const profile = await fetch(`https://codechallenge.rivet.work/api/v1/profile/${id}`, {
-    headers: {
-      "token": process.env.REACT_APP_API_TOKEN || ''
-    }
-  })
-  .then((response) => response.json())
-  .then((data) => {
-    // do something with the data
-    return data;
-  })
+// async function returnNetworkProfile(id: number) {
+//   // I think this might not be the case, but in imaginary-land, the full profile is bigger than the profile returned by /profiles
+//   const profile = await fetch(`https://codechallenge.rivet.work/api/v1/profile/${id}`, {
+//     headers: {
+//       "token": process.env.REACT_APP_API_TOKEN || ''
+//     }
+//   })
+//   .then((response) => response.json())
+//   .then((data) => {
+//     // do something with the data
+//     return data;
+//   })
 
-  console.log('got some data', profile);
-  return profile;
-}
+//   console.log('got some data', profile);
+//   return profile;
+// }
 
 async function createNetworkProfile(profile: any) {
   const defaultProfile = {
@@ -125,8 +125,8 @@ async function updateNetworkProfile(id: number, profile: any) {
 
 
 export const fetchProfiles = createAsyncThunk('profiles/fetchProfiles', () => {
-  //return returnFakeProfiles();
-  return returnNetworkProfiles();
+  return returnFakeProfiles();
+  //return returnNetworkProfiles();
 });
 
 
