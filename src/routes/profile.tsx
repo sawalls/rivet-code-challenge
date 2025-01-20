@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { currentProfile } from "../features/profile/profileSlice";
@@ -17,7 +17,7 @@ function Profile () {
         <div>
             <h2>{first_name} {last_name}</h2>
             <p><Link to={`/profile/${profile.id}/edit`}>Edit this profile</Link></p>
-            <img src={photo}/>
+            <img src={photo} alt="This profile's avatar"/>
             <p>{address}</p>
             <p>{city} {state} {zip}</p>
             <p>Contact: {phone} {email}</p>
