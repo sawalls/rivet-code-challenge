@@ -1,56 +1,55 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { isArray } from 'lodash'
 
-import { ProfileState, makeFakeUserList } from './profileUtils'
+import { ProfileState } from './profileUtils'
 import { RootState } from '../../store';
+
+// const HOST = "https://codechallenge.rivet.work"
+const HOST = "http://localhost:3001"
+const API_BASE = `${HOST}/api/v1`
 
 const initialState = {
   profiles: [],
   inFocus: null,
 } as ProfileState;
 
-function returnFakeProfiles() {
-  const profiles = makeFakeUserList();
-  console.log('got some [fake] data', profiles);
-  return profiles;
+// TODO: clean all these network requests to use try except instead of .then chaining
+async function returnNetworkProfiles() {
+  const profiles = await fetch(`${API_BASE}/profiles`, {
+    headers: {
+      "token": process.env.REACT_APP_API_TOKEN || ''
+    }
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    // do something with the data
+    console.log('we are in the THEN');
+    return data;
+  })
+
+  console.log('got some data', profiles);
+  if (isArray(profiles)) {
+    return profiles;
+  }
+  return [profiles];
 }
 
-// TODO: clean all these network requests to use try except instead of .then chaining
-// async function returnNetworkProfiles() {
-//   const profiles = await fetch("https://codechallenge.rivet.work/api/v1/profiles", {
-//     headers: {
-//       "token": process.env.REACT_APP_API_TOKEN || ''
-//     }
-//   })
-//   .then((response) => response.json())
-//   .then((data) => {
-//     // do something with the data
-//     return data;
-//   })
+async function returnNetworkProfile(id: number) {
+  // I think this might not be the case, but in imaginary-land, the full profile is bigger than the profile returned by /profiles
+  const profile = await fetch(`${API_BASE}/profile/${id}`, {
+    headers: {
+      "token": process.env.REACT_APP_API_TOKEN || ''
+    }
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    // do something with the data
+    return data;
+  })
 
-//   console.log('got some data', profiles);
-//   if (isArray(profiles)) {
-//     return profiles;
-//   }
-//   return [profiles];
-// }
-
-// async function returnNetworkProfile(id: number) {
-//   // I think this might not be the case, but in imaginary-land, the full profile is bigger than the profile returned by /profiles
-//   const profile = await fetch(`https://codechallenge.rivet.work/api/v1/profile/${id}`, {
-//     headers: {
-//       "token": process.env.REACT_APP_API_TOKEN || ''
-//     }
-//   })
-//   .then((response) => response.json())
-//   .then((data) => {
-//     // do something with the data
-//     return data;
-//   })
-
-//   console.log('got some data', profile);
-//   return profile;
-// }
+  console.log('got some data', profile);
+  return profile;
+}
 
 async function createNetworkProfile(profile: any) {
   const defaultProfile = {
@@ -68,7 +67,7 @@ async function createNetworkProfile(profile: any) {
   const outProfile = {...defaultProfile, ...profile};
 
   console.log('createNetworkProfile is about to make a POST', profile)
-  const returnvalue = await fetch(`https://codechallenge.rivet.work/api/v1/profile`, {
+  const returnvalue = await fetch(`${API_BASE}/profile`, {
     method: 'POST',
     headers: {
       "token": process.env.REACT_APP_API_TOKEN || '',
@@ -104,7 +103,7 @@ async function updateNetworkProfile(id: number, profile: any) {
 
   console.log('updateNetworkProfile is about to make a PUT', profile)
   console.log('stringified version', JSON.stringify(profile))
-  const returnvalue = await fetch(`https://codechallenge.rivet.work/api/v1/profile/${id}`, {
+  const returnvalue = await fetch(`${API_BASE}/profile/${id}`, {
     method: 'PUT',
     headers: {
       "token": process.env.REACT_APP_API_TOKEN || '',
@@ -125,8 +124,7 @@ async function updateNetworkProfile(id: number, profile: any) {
 
 
 export const fetchProfiles = createAsyncThunk('profiles/fetchProfiles', () => {
-  return returnFakeProfiles();
-  //return returnNetworkProfiles();
+  return returnNetworkProfiles();
 });
 
 
