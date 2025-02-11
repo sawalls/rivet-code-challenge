@@ -15,6 +15,8 @@ type Profile = {
 type ProfileState = {
   profiles: Profile[];
   inFocus: Profile | null;
+  status: 'pending' | 'fulfilled' | 'rejected' | null;
+  error: string | null;
 }
 
 export {

@@ -8,24 +8,21 @@ import { RootState } from '../../store';
 const HOST = "http://localhost:3001"
 const API_BASE = `${HOST}/api/v1`
 
-const initialState = {
-  profiles: [],
-  inFocus: null,
-} as ProfileState;
-
-// TODO: clean all these network requests to use try except instead of .then chaining
-async function returnNetworkProfiles() {
-  const profiles = await fetch(`${API_BASE}/profiles`, {
+const fetchAPI = async (path: string) => {
+  const response = await fetch(`${API_BASE}${path}`, {
     headers: {
       "token": process.env.REACT_APP_API_TOKEN || ''
     }
-  })
-  .then((response) => response.json())
-  .then((data) => {
-    // do something with the data
-    console.log('we are in the THEN');
-    return data;
-  })
+  });
+  if (!response.ok) {
+    throw new Error('API fetch returned but with non-OK status');
+  }
+  return response.json();
+}
+
+// TODO: clean all these network requests to use try except instead of .then chaining
+async function returnNetworkProfiles() {
+  const profiles = await fetchAPI('/profiles');
 
   console.log('got some data', profiles);
   if (isArray(profiles)) {
@@ -144,6 +141,12 @@ export const updateProfile = createAsyncThunk('profiles/updateProfile', (args: a
   return updateNetworkProfile(id, profile);
 });
 
+const initialState = {
+  profiles: [],
+  inFocus: null,
+  status: null,
+  error: null,
+} as ProfileState;
 
 export const profileSlice = createSlice({
   name: 'profiles',
@@ -151,10 +154,25 @@ export const profileSlice = createSlice({
   reducers: {
   },
   extraReducers(builder) {
+    builder.addCase(fetchProfiles.pending, (state) => {
+      return {
+        ...state,
+        status: 'pending',
+      }
+    });
     builder.addCase(fetchProfiles.fulfilled, (state, action) => {
       return {
         ...state,
-        profiles: action.payload
+        profiles: action.payload,
+        status: 'fulfilled',
+      }
+    });
+    builder.addCase(fetchProfiles.rejected, (state, action) => {
+      console.log(action.error);
+      return {
+        ...state,
+        error: action.error.message ?? null,
+        status: 'rejected',
       }
     });
     builder.addCase(fetchProfile.fulfilled, (state, action) => {
@@ -171,5 +189,7 @@ export const profileSlice = createSlice({
 export const profileList = (state: RootState) => state.profile.profiles;
 export const countProfiles = (state: RootState) => state.profile.profiles.length as number;
 export const currentProfile = (state: RootState) => state.profile.inFocus;
+export const status = (state: RootState) => state.profile.status;
+export const error = (state: RootState) => state.profile.error;
 
 export default profileSlice.reducer;
