@@ -169,7 +169,7 @@ export const profileSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { } = profileSlice.actions;
+// export const { } = profileSlice.actions;
 export const profileList = (state: RootState) => state.profile.profiles;
 export const countProfiles = (state: RootState) => state.profile.profiles.length as number;
 export const currentProfile = (state: RootState) => state.profile.inFocus;
