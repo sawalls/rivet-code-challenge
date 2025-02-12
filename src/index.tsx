@@ -42,7 +42,7 @@ function AppRouterProvider() {
         path: "/profile/:id",
         element: <Profile />,
         loader: async ({ params }) => {
-          appDispatch(fetchProfile(parseInt(params.id ? params.id : '')));
+          appDispatch(fetchProfile(parseInt(params.id ?? '')));
           return null;
         },
       },
