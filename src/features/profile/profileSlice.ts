@@ -33,19 +33,7 @@ async function returnNetworkProfiles() {
 
 async function returnNetworkProfile(id: number) {
   // I think this might not be the case, but in imaginary-land, the full profile is bigger than the profile returned by /profiles
-  const profile = await fetch(`${API_BASE}/profile/${id}`, {
-    headers: {
-      "token": process.env.REACT_APP_API_TOKEN || ''
-    }
-  })
-  .then((response) => response.json())
-  .then((data) => {
-    // do something with the data
-    return data;
-  })
-
-  console.log('got some data', profile);
-  return profile;
+  return await fetchAPI(`profile/${id}`);
 }
 
 async function createNetworkProfile(profile: any) {
