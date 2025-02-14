@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useGetProfileByIdQuery } from "../features/profile/profileApi";
 
 function Profile () {
-    const { profileId } = useParams();
+    const { id: profileId } = useParams();
     const profileResult = useGetProfileByIdQuery(profileId);
     // TODO: flesh this out a bit more
     const profile = profileResult.isSuccess ? profileResult.data : null;
