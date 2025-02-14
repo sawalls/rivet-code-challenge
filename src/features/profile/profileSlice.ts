@@ -1,27 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-
-import { ProfileState } from './profileUtils'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 
 // const HOST = "https://codechallenge.rivet.work"
 const HOST = "http://localhost:3001"
 const API_BASE = `${HOST}/api/v1`
-
-const fetchAPI = async (path: string) => {
-  const response = await fetch(`${API_BASE}${path}`, {
-    headers: {
-      "token": process.env.REACT_APP_API_TOKEN || ''
-    }
-  });
-  if (!response.ok) {
-    throw new Error('API fetch returned but with non-OK status');
-  }
-  return response.json();
-}
-
-async function returnNetworkProfile(id: number) {
-  // I think this might not be the case, but in imaginary-land, the full profile is bigger than the profile returned by /profiles
-  return await fetchAPI(`profile/${id}`);
-}
 
 // TODO: clean all these network requests to use try except instead of .then chaining
 async function createNetworkProfile(profile: any) {
@@ -95,11 +76,6 @@ async function updateNetworkProfile(id: number, profile: any) {
   return returnvalue;
 }
 
-export const fetchProfile = createAsyncThunk('profiles/fetchProfile', (id: number) => {
-  console.log('fetchProfile called with', id);
-  return returnNetworkProfile(id);
-});
-
 export const createProfile = createAsyncThunk('profiles/createProfile', (profile: any) => {
   console.log('createProfile called with', profile);
   return createNetworkProfile(profile);
@@ -110,27 +86,3 @@ export const updateProfile = createAsyncThunk('profiles/updateProfile', (args: a
   console.log('updateProfile called with', profile);
   return updateNetworkProfile(id, profile);
 });
-
-const initialState = {
-  profiles: [],
-  inFocus: null,
-  status: null,
-  error: null,
-} as ProfileState;
-
-export const profileSlice = createSlice({
-  name: 'profiles',
-  initialState,
-  reducers: {
-  },
-  extraReducers(builder) {
-    builder.addCase(fetchProfile.fulfilled, (state, action) => {
-      return {
-        ...state,
-        inFocus: action.payload,
-      }
-    });
-  },
-});
-
-export default profileSlice.reducer;

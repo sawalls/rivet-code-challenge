@@ -4,7 +4,7 @@ import { useGetProfileByIdQuery } from "../features/profile/profileApi";
 function Profile () {
     const { id: profileId } = useParams();
     const profileResult = useGetProfileByIdQuery(profileId);
-    // TODO: flesh this out a bit more
+    // TODO: flesh this out a bit more. Error / loading states, etc.
     const profile = profileResult.isSuccess ? profileResult.data : null;
 
     if (!profile) {

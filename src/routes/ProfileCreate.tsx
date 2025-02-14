@@ -1,7 +1,9 @@
 import {
     Form,
-    useParams,
 } from "react-router-dom";
+
+// TODO: error handling for
+// - network to create request fails
 
 // TODO: parameterize this with HTMLFormMethod or something to get POST/PUT in same component
 function ProfileCreate () {
