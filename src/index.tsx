@@ -9,12 +9,10 @@ import './index.css';
 import { createRouter } from './routes/index'
 import store, {useAppDispatch} from './store';
 
-
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-// Special RouterProvider that can use thunks and dispatch
 function AppRouterProvider() {
   const appDispatch = useAppDispatch();
   const router = createRouter(appDispatch);
