@@ -1,16 +1,17 @@
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-
-import { currentProfile } from "../features/profile/profileSlice";
+import { Link, useParams } from "react-router-dom";
+import { useGetProfileByIdQuery } from "../features/profile/profileApi";
 
 function Profile () {
-    const profile = useSelector(currentProfile);
+    const { profileId } = useParams();
+    const profileResult = useGetProfileByIdQuery(profileId);
+    // TODO: flesh this out a bit more
+    const profile = profileResult.isSuccess ? profileResult.data : null;
+
     if (!profile) {
         // TODO make this return an error page
         return <h1>No selected profile found</h1>;
     }
 
-    console.log('routed_profile_id', profile ? profile.id : 'none'); 
     const { first_name, last_name, phone, email, address, city, state, zip, photo, notes } = profile;
 
     return (

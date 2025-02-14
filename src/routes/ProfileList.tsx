@@ -1,17 +1,17 @@
 import { Box, Stack } from "@mui/material";
-import { useSelector } from "react-redux"
 import { Link } from "react-router-dom";
 
 import { ProfileLineItem } from "../features/profile/ProfileLineItem";
-import { profileList, status, error } from "../features/profile/profileSlice";
+import { useGetProfilesQuery } from "../features/profile/profileApi";
+import type { Profile } from "../features/profile/profileUtils";
 
 const ProfileList = () => {
-  const profiles = useSelector(profileList);
-  const profileListStatus = useSelector(status);
-  const profileListError = useSelector(error);
+  const profilesResult = useGetProfilesQuery();
 
   let innerElement;
-  if (profileListStatus === 'fulfilled') {
+  if (profilesResult.isSuccess) {
+    // TODO: validation here
+    const profiles = profilesResult.data as Profile[];
     innerElement = profiles.length > 0 && profiles.map((profile)=>(
       <Link to={`/profile/${profile.id}`} key={profile.id}>
         <Box sx={{ backgroundColor: 'white', 
@@ -25,10 +25,16 @@ const ProfileList = () => {
         </Box>
       </Link>
     ));
-  } else if (profileListStatus === 'pending') {
-    innerElement = 'Trying to fetch profile list...';
-  } else if (profileListStatus === 'rejected') {
-    innerElement = `ERROR fetching profile list: ${profileListError}`;
+  } else if (profilesResult.isLoading) {
+    innerElement = 'Trying to load profile list...';
+  } else if (profilesResult.isError) {
+    const error = profilesResult.error;
+    if ('status' in error) {
+      const errMsg = 'error' in error ? error.error : error.data;
+      innerElement = `ERROR fetching profile list: ${error.status} ${errMsg}`;
+    } else {
+      innerElement = `ERROR fetching profile list: ${error.message}`;
+    }
   }
 
   return (

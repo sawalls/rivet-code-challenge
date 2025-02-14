@@ -10,7 +10,7 @@ import {
 import './index.css';
 import Root from './routes/Root';
 import Profile from './routes/Profile';
-import { createProfile, updateProfile, fetchProfile, fetchProfiles } from './features/profile/profileSlice';
+import { createProfile, updateProfile } from './features/profile/profileSlice';
 import ProfileList from './routes/ProfileList';
 import ProfileEdit from './routes/ProfileEdit';
 import ProfileCreate from './routes/ProfileCreate';
@@ -34,17 +34,9 @@ function AppRouterProvider() {
         path: "/",
         index: true,
         element: <ProfileList />,
-        loader: async () => {
-          appDispatch(fetchProfiles());
-          return null;
-        },
       },{
         path: "/profile/:id",
         element: <Profile />,
-        loader: async ({ params }) => {
-          appDispatch(fetchProfile(parseInt(params.id ?? '')));
-          return null;
-        },
       },
       {
         path: "/profile/:id/edit",

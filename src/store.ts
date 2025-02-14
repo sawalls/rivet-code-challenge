@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch } from "react-redux";
 
-import profileReducer from './features/profile/profileSlice'
+import { profileApi } from './features/profile/profileApi';
 
 const store = configureStore({
   reducer: {
-    profile: profileReducer
-  }
+    [profileApi.reducerPath]: profileApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(profileApi.middleware),
 })
 
 // This AppDispatch stuff is needed because the `redux-thunk` middleware adds thunk dispatch to `dispatch`
