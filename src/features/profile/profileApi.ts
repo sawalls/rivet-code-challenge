@@ -9,7 +9,10 @@ export const profileApi = createApi({
     endpoints: (builder) => ({
         getProfiles: builder.query<unknown, void>({ query: () => 'profiles' }),
         getProfileById: builder.query({ query: (id) => `profile/${id}` }),
+        createProfile: builder.mutation({ query: (profile) => ({ url: 'profile', method: 'POST', body: profile }) }),
     }),
 });
 
-export const { useGetProfilesQuery, useGetProfileByIdQuery } = profileApi;
+export const { useGetProfilesQuery, useGetProfileByIdQuery, useCreateProfileMutation } = profileApi;
+
+export default profileApi;
