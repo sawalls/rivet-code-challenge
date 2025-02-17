@@ -1,23 +1,27 @@
 import { Form, useNavigate } from "react-router-dom";
+import { HTMLFormMethod } from "@remix-run/router";
 import { useCreateProfileMutation } from "../features/profile/profileApi";
 
 // TODO: error handling for
 // - network to create request fails
 
 // TODO: parameterize this with HTMLFormMethod or something to get POST/PUT in same component
-function ProfileCreate() {
-  const [createProfile, { isError, error }] = useCreateProfileMutation();
+function ProfileCreateEdit({mutation, method} : { mutation: ReturnType<typeof useCreateProfileMutation>, method: HTMLFormMethod}) {
+  const [mutateProfile, { isError, error }] = mutation;
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const profile = Object.fromEntries(formData.entries());
-    const result = await createProfile(profile);
+    const result = await mutateProfile(profile);
     if (!("error" in result)) {
       navigate("/");
     }
   };
+
+  const verb = method === "post" ? "create" : "edit";
+  const capsVerb = verb.charAt(0).toUpperCase() + verb.slice(1);
 
   //TODO use selector to get default values from currently selected profile
   // ^ I thiiiink this is saying we could eliminate ProfileEdit as separate component
@@ -30,17 +34,17 @@ function ProfileCreate() {
           : "have to give up because dunno what error.data is"; // TODO: uhh huh?
       return (
         <h1>
-          Error creating profile: {error.status} {errMsg}
+          Error during profile {verb}: {error.status} {errMsg}
         </h1>
       );
     } else {
       const errMsg = error.message;
-      return <h1>Error creating profile: {errMsg}</h1>;
+      return <h1>Error during profile {verb}: {errMsg}</h1>;
     }
   } else {
     // isUninitialized || isLoading
     return (
-      <Form method="post" id="profile-create" onSubmit={handleSubmit}>
+      <Form method={method} id={`profile-${verb}`} onSubmit={handleSubmit}>
         <p>
           <span>Name</span>
           <input
@@ -123,11 +127,18 @@ function ProfileCreate() {
           </label>
         </p>
         <p>
-          <button type="submit">Create</button>
+          <button type="submit">{capsVerb}</button>
         </p>
       </Form>
     );
   }
 }
+
+const ProfileCreate = () => {
+  const mutation = useCreateProfileMutation();
+  return <ProfileCreateEdit mutation={mutation} method="post" />;
+}
+
+export { ProfileCreateEdit };
 
 export default ProfileCreate;
