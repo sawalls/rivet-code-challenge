@@ -12,11 +12,4 @@ type Profile = {
   notes: string; // 4GB max"
 };
 
-type ProfileState = {
-  profiles: Profile[];
-  inFocus: Profile | null;
-  status: "pending" | "fulfilled" | "rejected" | null;
-  error: string | null;
-};
-
-export { type Profile, type ProfileState };
+export { type Profile };

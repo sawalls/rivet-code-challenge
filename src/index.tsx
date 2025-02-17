@@ -5,15 +5,14 @@ import { RouterProvider } from "react-router-dom";
 
 import "./index.css";
 import { createRouter } from "./routes/index";
-import store, { useAppDispatch } from "./store";
+import store from "./store";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
 
 function AppRouterProvider() {
-  const appDispatch = useAppDispatch();
-  const router = createRouter(appDispatch);
+  const router = createRouter();
 
   return <RouterProvider router={router} />;
 }

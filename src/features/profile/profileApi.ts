@@ -12,6 +12,13 @@ export const profileApi = createApi({
     createProfile: builder.mutation({
       query: (profile) => ({ url: "profile", method: "POST", body: profile }),
     }),
+    editProfile: builder.mutation({
+      query: ({ id, profile }) => ({
+        url: `profile/${id}`,
+        method: "PUT",
+        body: profile,
+      }),
+    }),
   }),
 });
 
@@ -19,6 +26,7 @@ export const {
   useGetProfilesQuery,
   useGetProfileByIdQuery,
   useCreateProfileMutation,
+  useEditProfileMutation,
 } = profileApi;
 
 export default profileApi;

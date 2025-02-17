@@ -1,13 +1,10 @@
-import { createBrowserRouter, redirect } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Root from "./Root";
 import ProfileList from "./ProfileList";
 import Profile from "./Profile";
-import ProfileCreate from "./ProfileCreate";
-import ProfileEdit from "./ProfileEdit";
-import { updateProfile } from "../features/profile/profileSlice";
+import { ProfileCreate, ProfileEdit } from "./ProfileCreateEdit";
 
-// TODO: typing here
-export const createRouter = (appDispatch: any) => {
+export const createRouter = () => {
   const router = createBrowserRouter([
     {
       path: "/",
@@ -25,22 +22,6 @@ export const createRouter = (appDispatch: any) => {
         {
           path: "/profile/:id/edit",
           element: <ProfileEdit />,
-          // TODO have a loader here
-          action: async ({ request, params }) => {
-            const formData = await request.formData();
-            const { id } = params;
-
-            console.log("form data", formData);
-            const profile = Object.fromEntries(formData.entries());
-            console.log("objectized form data", profile);
-            console.log("params", params);
-
-            // TODO get rid of return null. Also redirect to the new profile
-            console.log(
-              appDispatch(updateProfile({ id: id, profile: profile })),
-            );
-            return redirect(`/profile/${id}`);
-          },
         },
         {
           path: "/profile/create",
