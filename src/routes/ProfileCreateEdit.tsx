@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, useNavigate } from "react-router-dom";
+import { Form, useNavigate, useParams } from "react-router-dom";
 import { useCreateProfileMutation, useEditProfileMutation } from "../features/profile/profileApi";
 
 // TODO: error handling for
@@ -14,6 +14,7 @@ export const ProfileEdit = () => {
 }
 
 function ProfileCreateEdit({mutation, verb} : { mutation: ReturnType<typeof useCreateProfileMutation>, verb: 'create' | 'edit'}) {
+  const { id: profileId } = useParams();
   const [mutateProfile, { isError, error }] = mutation;
   const navigate = useNavigate();
 
@@ -21,7 +22,13 @@ function ProfileCreateEdit({mutation, verb} : { mutation: ReturnType<typeof useC
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const profile = Object.fromEntries(formData.entries());
-    const result = await mutateProfile(profile);
+
+    let result;
+    if (verb === 'create') {
+      result = await mutateProfile(profile);
+    } else {
+      result = await mutateProfile({ id: profileId, profile });
+    }
     if (!("error" in result)) {
       navigate("/");
     }
