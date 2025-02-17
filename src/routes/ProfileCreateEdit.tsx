@@ -1,20 +1,19 @@
 import React from 'react';
 import { Form, useNavigate } from "react-router-dom";
-import { HTMLFormMethod } from "@remix-run/router";
 import { useCreateProfileMutation, useEditProfileMutation } from "../features/profile/profileApi";
 
 // TODO: error handling for
 // - network to create request fails
 
 export const ProfileCreate = () => {
-  return <ProfileCreateEdit mutation={useCreateProfileMutation()} method="post" />;
+  return <ProfileCreateEdit mutation={useCreateProfileMutation()} verb="create" />;
 }
 
 export const ProfileEdit = () => {
-  return <ProfileCreateEdit mutation={useEditProfileMutation()} method="put" />;
+  return <ProfileCreateEdit mutation={useEditProfileMutation()} verb="edit" />;
 }
 
-function ProfileCreateEdit({mutation, method} : { mutation: ReturnType<typeof useCreateProfileMutation>, method: HTMLFormMethod}) {
+function ProfileCreateEdit({mutation, verb} : { mutation: ReturnType<typeof useCreateProfileMutation>, verb: 'create' | 'edit'}) {
   const [mutateProfile, { isError, error }] = mutation;
   const navigate = useNavigate();
 
@@ -30,7 +29,6 @@ function ProfileCreateEdit({mutation, method} : { mutation: ReturnType<typeof us
 
   if (isError && error) {
     // TODO: make this show up in a dismissable banner
-    const verb = method === "post" ? "create" : "edit";
     if ("status" in error) {
       const errMsg =
         "error" in error
@@ -47,16 +45,15 @@ function ProfileCreateEdit({mutation, method} : { mutation: ReturnType<typeof us
     }
   } else {
     // isUninitialized || isLoading
-    return <ProfileForm method={method} handleSubmit={handleSubmit} />;
+    return <ProfileForm handleSubmit={handleSubmit} verb={verb} />;
   }
 }
 
-function ProfileForm({ method, handleSubmit }: { method: HTMLFormMethod, handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void }) {
-  const verb = method === "post" ? "create" : "edit";
+function ProfileForm({ handleSubmit, verb }: { handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void , verb: 'create' | 'edit'}) {
   const capsVerb = verb.charAt(0).toUpperCase() + verb.slice(1);
 
   return (
-    <Form method={method} id={`profile-${verb}`} onSubmit={handleSubmit}>
+    <Form id={`profile-${verb}`} onSubmit={handleSubmit}>
       <p>
         <span>Name</span>
         <input
