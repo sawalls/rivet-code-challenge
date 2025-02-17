@@ -11,14 +11,14 @@ const Status = () => {
     const profiles = profilesResult.data as Profile[];
     innerElement = `Loaded ${profiles.length} profile(s).`;
   } else {
-    innerElement = 'Loading profiles...';
+    innerElement = "Loading profiles...";
   }
 
   return (
-    <Box sx={{fontSize: '12px', color: '#888', marginTop: '1em'}}>
+    <Box sx={{ fontSize: "12px", color: "#888", marginTop: "1em" }}>
       {innerElement}
     </Box>
-  )
-}
+  );
+};
 
-export { Status }
+export { Status };

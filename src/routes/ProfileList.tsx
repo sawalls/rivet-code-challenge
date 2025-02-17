@@ -12,25 +12,30 @@ const ProfileList = () => {
   if (profilesResult.isSuccess) {
     // TODO: validation here
     const profiles = profilesResult.data as Profile[];
-    innerElement = profiles.length > 0 && profiles.map((profile)=>(
-      <Link to={`/profile/${profile.id}`} key={profile.id}>
-        <Box sx={{ backgroundColor: 'white', 
-                  borderRadius: '4px', 
-                  overflow: 'hidden', 
-                  boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, .1)',
-                  cursor: 'pointer'
-                  }} 
-            key={profile.id} >
-          <ProfileLineItem profile={profile}/>
-        </Box>
-      </Link>
-    ));
+    innerElement =
+      profiles.length > 0 &&
+      profiles.map((profile) => (
+        <Link to={`/profile/${profile.id}`} key={profile.id}>
+          <Box
+            sx={{
+              backgroundColor: "white",
+              borderRadius: "4px",
+              overflow: "hidden",
+              boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, .1)",
+              cursor: "pointer",
+            }}
+            key={profile.id}
+          >
+            <ProfileLineItem profile={profile} />
+          </Box>
+        </Link>
+      ));
   } else if (profilesResult.isLoading) {
-    innerElement = 'Trying to load profile list...';
+    innerElement = "Trying to load profile list...";
   } else if (profilesResult.isError) {
     const error = profilesResult.error;
-    if ('status' in error) {
-      const errMsg = 'error' in error ? error.error : error.data;
+    if ("status" in error) {
+      const errMsg = "error" in error ? error.error : error.data;
       innerElement = `ERROR fetching profile list: ${error.status} ${errMsg}`;
     } else {
       innerElement = `ERROR fetching profile list: ${error.message}`;
@@ -38,24 +43,27 @@ const ProfileList = () => {
   }
 
   return (
-    <Stack spacing={1} sx={{textAlign: 'left'}}>
+    <Stack spacing={1} sx={{ textAlign: "left" }}>
       <Link to={"/profile/create"}>
-        <Box sx={{   boxSizing: 'border-box', }}>
-          <Box sx={{ border: '1px solid gray',
-                    backgroundColor: 'white', 
-                    padding: '.5em', 
-                    height: '1em', 
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    lineHeight: '1.2em',
-                    }}>
+        <Box sx={{ boxSizing: "border-box" }}>
+          <Box
+            sx={{
+              border: "1px solid gray",
+              backgroundColor: "white",
+              padding: ".5em",
+              height: "1em",
+              borderRadius: "4px",
+              cursor: "pointer",
+              lineHeight: "1.2em",
+            }}
+          >
             Create new profile: ➕
           </Box>
         </Box>
       </Link>
-      { innerElement }
+      {innerElement}
     </Stack>
-  )
-}
+  );
+};
 
 export default ProfileList;
