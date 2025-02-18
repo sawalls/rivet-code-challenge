@@ -1,7 +1,7 @@
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { SerializedError } from "@reduxjs/toolkit";
 
-function RTKQueryError({error}: {error: FetchBaseQueryError | SerializedError}) {
+function RTKQueryError({error, operation}: {error: FetchBaseQueryError | SerializedError, operation?: string | undefined}) {
     if ("status" in error) {
         const errMsg = "error" in error ? error.error : null;
         const errData = "data" in error ? JSON.stringify(error.data) : null;
@@ -14,14 +14,15 @@ function RTKQueryError({error}: {error: FetchBaseQueryError | SerializedError}) 
         }
 
         return <div style={{ textAlign: "center", justifySelf: "center" }}>
-            <h2>{`ERROR fetching profile list: ${error.status}`}</h2>
+            <h2>{`ERROR with status: ${error.status}`}</h2>
+            {operation && <h3>{`While attempting operation: ${operation}`}</h3>}
             {errMsg && <p><b>Error: </b>{errMsg}</p>}
             {errData && <p><b>Data: </b>{errData}</p>}
             {originalStatus && <p><b>Original Status: </b>{originalStatus}</p>}
             {backendSuggestion && <p>{backendSuggestion}</p>}
         </div>;
     } else {
-        return <>{`ERROR fetching profile list: ${error.message}`}</>;
+        return <>{`ERROR with status: ${error.message}`}</>;
     }
 }
 

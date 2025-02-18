@@ -18,7 +18,7 @@ const ProfileList = () => {
   } else if (profilesResult.isLoading) {
     innerElement = "Trying to load profile list...";
   } else if (profilesResult.isError) {
-    innerElement = <RTKQueryError error={profilesResult.error} />;
+    innerElement = <RTKQueryError error={profilesResult.error} operation='get profile list'/>;
   }
   return <ProfileListWrapper>{innerElement}</ProfileListWrapper>;
 };
