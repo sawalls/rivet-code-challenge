@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 import { ProfileLineItem } from "../features/profile/ProfileLineItem";
 import { useGetProfilesQuery } from "../features/profile/profileApi";
-import type { Profile } from "../features/profile/profileUtils";
 
 const ProfileList = () => {
   const profilesResult = useGetProfilesQuery();
@@ -11,7 +10,7 @@ const ProfileList = () => {
   let innerElement;
   if (profilesResult.isSuccess) {
     // TODO: validation here
-    const profiles = profilesResult.data as Profile[];
+    const profiles = profilesResult.data;
     innerElement =
       profiles.length > 0 &&
       profiles.map((profile) => (

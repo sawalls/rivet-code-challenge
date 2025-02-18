@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import type { Profile } from "./profileUtils";
 
 const HOST = "http://localhost:3001";
 const API_BASE = `${HOST}/api/v1/`;
@@ -7,7 +8,7 @@ export const profileApi = createApi({
   reducerPath: "profileApi",
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE }),
   endpoints: (builder) => ({
-    getProfiles: builder.query<unknown, void>({ query: () => "profiles" }),
+    getProfiles: builder.query<Profile[], void>({ query: () => "profiles" }),
     getProfileById: builder.query({ query: (id) => `profile/${id}` }),
     createProfile: builder.mutation({
       query: (profile) => ({ url: "profile", method: "POST", body: profile }),

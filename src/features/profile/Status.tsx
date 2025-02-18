@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
 import { useGetProfilesQuery } from "./profileApi";
-import { Profile } from "./profileUtils";
 
 const Status = () => {
   // TODO: add currently selected profile.
@@ -8,7 +7,7 @@ const Status = () => {
 
   let innerElement;
   if (profilesResult.isSuccess) {
-    const profiles = profilesResult.data as Profile[];
+    const profiles = profilesResult.data;
     innerElement = `Loaded ${profiles.length} profile(s).`;
   } else {
     innerElement = "Loading profiles...";
