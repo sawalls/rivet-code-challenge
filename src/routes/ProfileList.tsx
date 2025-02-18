@@ -3,44 +3,27 @@ import { Link } from "react-router-dom";
 
 import { ProfileLineItem } from "../features/profile/ProfileLineItem";
 import { useGetProfilesQuery } from "../features/profile/profileApi";
+import RTKQueryError from "../features/util/RTKQueryError";
 
 const ProfileList = () => {
   const profilesResult = useGetProfilesQuery();
 
-  let innerElement;
+  let innerElement: React.ReactNode;
   if (profilesResult.isSuccess) {
     // TODO: validation here
     const profiles = profilesResult.data;
     innerElement =
       profiles.length > 0 &&
-      profiles.map((profile) => (
-        <Link to={`/profile/${profile.id}`} key={profile.id}>
-          <Box
-            sx={{
-              backgroundColor: "white",
-              borderRadius: "4px",
-              overflow: "hidden",
-              boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, .1)",
-              cursor: "pointer",
-            }}
-            key={profile.id}
-          >
-            <ProfileLineItem profile={profile} />
-          </Box>
-        </Link>
-      ));
+      profiles.map((p) => <ProfileLineItem key={p.id} profile={p} />);
   } else if (profilesResult.isLoading) {
     innerElement = "Trying to load profile list...";
   } else if (profilesResult.isError) {
-    const error = profilesResult.error;
-    if ("status" in error) {
-      const errMsg = "error" in error ? error.error : error.data;
-      innerElement = `ERROR fetching profile list: ${error.status} ${errMsg}`;
-    } else {
-      innerElement = `ERROR fetching profile list: ${error.message}`;
-    }
+    innerElement = <RTKQueryError error={profilesResult.error} />;
   }
+  return <ProfileListWrapper>{innerElement}</ProfileListWrapper>;
+};
 
+function ProfileListWrapper({ children }: { children: React.ReactNode }) {
   return (
     <Stack spacing={1} sx={{ textAlign: "left" }}>
       <Link to={"/profile/create"}>
@@ -60,9 +43,8 @@ const ProfileList = () => {
           </Box>
         </Box>
       </Link>
-      {innerElement}
-    </Stack>
-  );
-};
+      {children}
+    </Stack>);
+}
 
 export default ProfileList;
