@@ -1,7 +1,7 @@
 import { isRouteErrorResponse, Link, useRouteError } from "react-router-dom";
 import AppFrame from "./AppFrame";
 
-function ErrorBoundary() {
+function ErrorPage() {
     let error = useRouteError();
     return <AppFrame>
             <ErrorReport error={error} />
@@ -35,6 +35,6 @@ function ErrorReport({error}: {error: unknown}) {
     return <div style={{ textAlign: "center", width: "75%", justifySelf: "center" }}>{components}</div>;
 }
 
-export { ErrorReport, ErrorBoundary };
+export { ErrorReport, ErrorPage };
 
-export default ErrorBoundary;
+export default ErrorPage;
