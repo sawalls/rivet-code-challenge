@@ -6,15 +6,21 @@ import { RouterProvider } from "react-router-dom";
 import "./index.css";
 import { createRouter } from "./routes/index";
 import store from "./store";
+import { ErrorReport } from "./features/util/ErrorBoundary";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
 
 function AppRouterProvider() {
-  const router = createRouter();
+  try {
+    const router = createRouter();
 
-  return <RouterProvider router={router} />;
+    return <RouterProvider router={router} />;
+  } catch (error) {
+    // It is important to use ErrorReport and not ErrorBoundary because ErrorBoundary depends on the router
+    return <ErrorReport error={error} />;
+  }
 }
 
 root.render(

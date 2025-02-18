@@ -3,12 +3,14 @@ import Root from "./Root";
 import ProfileList from "./ProfileList";
 import Profile from "./Profile";
 import { ProfileCreate, ProfileEdit } from "./ProfileCreateEdit";
+import ErrorBoundary from "../features/util/ErrorBoundary";
 
 export const createRouter = () => {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Root />,
+      errorElement: <ErrorBoundary />,
       children: [
         {
           path: "/",
