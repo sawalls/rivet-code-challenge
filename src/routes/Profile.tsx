@@ -8,8 +8,7 @@ function Profile() {
   const profile = profileResult.isSuccess ? profileResult.data : null;
 
   if (!profile) {
-    // TODO make this return an error page
-    return <h1>No selected profile found</h1>;
+    return <h1>Error. No profile found with id: {profileId}</h1>;
   }
 
   const {
