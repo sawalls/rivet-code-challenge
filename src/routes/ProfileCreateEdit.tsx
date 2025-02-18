@@ -3,10 +3,8 @@ import { Form, useNavigate, useParams } from "react-router-dom";
 import { useCreateProfileMutation, useEditProfileMutation, useGetProfileByIdQuery } from "../features/profile/profileApi";
 import { type Profile } from '../features/profile/profileUtils';
 import RTKQueryWrapper from '../features/util/RTKQueryWrapper';
-
-// TODO: error handling for
-// - network to create request fails
-// TODO: flesh this out a bit more. Error / loading states, etc.
+import RTKQueryError from '../features/util/RTKQueryError';
+import { CircularProgress } from '@mui/material';
 
 export const ProfileCreate = () => {
   return <ProfileCreateEdit mutation={useCreateProfileMutation()} verb="create" />;
@@ -18,7 +16,7 @@ export const ProfileEdit = () => {
   const result = useGetProfileByIdQuery(profileId);
 
   return <RTKQueryWrapper useQueryHookResult={result} operation="get profile">
-    <ProfileCreateEdit mutation={mutation} verb="edit" initialProfile={result.data} />;
+    <ProfileCreateEdit mutation={mutation} verb="edit" initialProfile={result.data} />
   </RTKQueryWrapper>;
 }
 
@@ -32,7 +30,7 @@ interface ProfileCreateEditProps {
 
 function ProfileCreateEdit({ mutation, verb, initialProfile }: Readonly<ProfileCreateEditProps>) {
   const { id: profileId } = useParams();
-  const [mutateProfile, { isError, error }] = mutation;
+  const [mutateProfile, { isLoading, isError, error }] = mutation;
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -51,25 +49,11 @@ function ProfileCreateEdit({ mutation, verb, initialProfile }: Readonly<ProfileC
     }
   };
 
-  if (isError && error) {
-    // TODO: make this show up in a dismissable banner
-    if ("status" in error) {
-      const errMsg =
-        "error" in error
-          ? error.error
-          : "have to give up because dunno what error.data is"; // TODO: uhh huh?
-      return (
-        <h1>
-          Error during profile {verb}: {error.status} {errMsg}
-        </h1>
-      );
-    } else {
-      const errMsg = error.message;
-      return <h1>Error during profile {verb}: {errMsg}</h1>;
-    }
+  if (isError) {
+    return <RTKQueryError error={error} operation={`profile ${verb}`} />;
   } else {
     // isUninitialized || isLoading
-    return <ProfileForm handleSubmit={handleSubmit} verb={verb} initialProfile={initialProfile} />;
+    return <ProfileForm handleSubmit={handleSubmit} verb={verb} initialProfile={initialProfile} isLoading={isLoading} />;
   }
 }
 
@@ -77,9 +61,10 @@ interface ProfileFormProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   verb: ProfileVerb;
   initialProfile?: Profile | undefined;
+  isLoading: boolean;
 }
 
-function ProfileForm({ handleSubmit, verb, initialProfile }: Readonly<ProfileFormProps>) {
+function ProfileForm({ handleSubmit, verb, initialProfile, isLoading }: Readonly<ProfileFormProps>) {
   return (
     <Form id={`profile-${verb}`} onSubmit={handleSubmit}>
       <p>
@@ -171,7 +156,13 @@ function ProfileForm({ handleSubmit, verb, initialProfile }: Readonly<ProfileFor
         </label>
       </p>
       <p>
-        <button type="submit">Submit</button>
+        {!isLoading ? <button type="submit" style={{ width: '8em', height: '2em' }}>Submit</button> : 'Submitting'}
+        <br />
+        {isLoading && (
+          <CircularProgress
+            size={24}
+          />
+        )}
       </p>
     </Form>
   );
