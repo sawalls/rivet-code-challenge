@@ -3,27 +3,23 @@ import { Link } from "react-router-dom";
 
 import { ProfileLineItem } from "../features/profile/ProfileLineItem";
 import { useGetProfilesQuery } from "../features/profile/profileApi";
-import RTKQueryError from "../features/util/RTKQueryError";
+import type { Profile } from "../features/profile/profileUtils";
+import RTKQueryWrapper from "../features/util/RTKQueryWrapper";
 
 const ProfileList = () => {
-  const profilesResult = useGetProfilesQuery();
+  const result = useGetProfilesQuery();
 
-  let innerElement: React.ReactNode;
-  if (profilesResult.isSuccess) {
-    // TODO: validation here
-    const profiles = profilesResult.data;
-    innerElement =
-      profiles.length > 0 &&
-      profiles.map((p) => <ProfileLineItem key={p.id} profile={p} />);
-  } else if (profilesResult.isLoading) {
-    innerElement = "Trying to load profile list...";
-  } else if (profilesResult.isError) {
-    innerElement = <RTKQueryError error={profilesResult.error} operation='get profile list'/>;
-  }
-  return <ProfileListWrapper>{innerElement}</ProfileListWrapper>;
+  return <RTKQueryWrapper useQueryHookResult={result} operation="get profiles">
+    <ProfileListWrapped profiles={result.data} />
+  </RTKQueryWrapper>;
 };
 
-function ProfileListWrapper({ children }: { children: React.ReactNode }) {
+function ProfileListWrapped({ profiles }: { profiles: Profile[] | undefined }) {
+  const lineItems =
+    profiles &&
+    profiles.length > 0 &&
+    profiles.map((p) => <ProfileLineItem key={p.id} profile={p} />);
+
   return (
     <Stack spacing={1} sx={{ textAlign: "left" }}>
       <Link to={"/profile/create"}>
@@ -43,7 +39,7 @@ function ProfileListWrapper({ children }: { children: React.ReactNode }) {
           </Box>
         </Box>
       </Link>
-      {children}
+      {lineItems}
     </Stack>);
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, useNavigate, useParams } from "react-router-dom";
 import { useCreateProfileMutation, useEditProfileMutation, useGetProfileByIdQuery } from "../features/profile/profileApi";
 import { type Profile } from '../features/profile/profileUtils';
+import RTKQueryWrapper from '../features/util/RTKQueryWrapper';
 
 // TODO: error handling for
 // - network to create request fails
@@ -12,13 +13,13 @@ export const ProfileCreate = () => {
 }
 
 export const ProfileEdit = () => {
+  const mutation = useEditProfileMutation();
   const { id: profileId } = useParams();
-  // TODO: code duplication with Profile.tsx
-  const profileResult = useGetProfileByIdQuery(profileId);
-  const profile = profileResult.isSuccess ? profileResult.data : null;
-  // TODO: validate profileId exists, is a number, corresponds to a profile
+  const result = useGetProfileByIdQuery(profileId);
 
-  return <ProfileCreateEdit mutation={useEditProfileMutation()} verb="edit" initialProfile={profile} />;
+  return <RTKQueryWrapper useQueryHookResult={result} operation="get profile">
+    <ProfileCreateEdit mutation={mutation} verb="edit" initialProfile={result.data} />;
+  </RTKQueryWrapper>;
 }
 
 type ProfileVerb = 'create' | 'edit';

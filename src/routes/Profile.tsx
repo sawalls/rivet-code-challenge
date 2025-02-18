@@ -1,27 +1,20 @@
 import { Link, useParams } from "react-router-dom";
 import { useGetProfileByIdQuery } from "../features/profile/profileApi";
+import RTKQueryWrapper from "../features/util/RTKQueryWrapper";
 
 function Profile() {
   const { id: profileId } = useParams();
   const profileResult = useGetProfileByIdQuery(profileId);
   // TODO: flesh this out a bit more. Error / loading states, etc.
-  const profile = profileResult.isSuccess ? profileResult.data : null;
+  return <RTKQueryWrapper useQueryHookResult={profileResult} operation="get profile">
+    <ProfileWrapped profile={profileResult.data} />
+  </RTKQueryWrapper>;
+}
 
-  if (!profile) {
-    return <h1>Error. No profile found with id: {profileId}</h1>;
-  }
-
+// TODO: add typing here when it's added on to profileAPI
+function ProfileWrapped({profile}: {profile: any}) {
   const {
-    first_name,
-    last_name,
-    phone,
-    email,
-    address,
-    city,
-    state,
-    zip,
-    photo,
-    notes,
+    id, first_name, last_name, phone, email, address, city, state, zip, photo, notes,
   } = profile;
 
   return (
@@ -30,7 +23,7 @@ function Profile() {
         {first_name} {last_name}
       </h2>
       <p>
-        <Link to={`/profile/${profile.id}/edit`}>Edit this profile</Link>
+        <Link to={`/profile/${id}/edit`}>Edit this profile</Link>
       </p>
       <img src={photo} alt="This profile's avatar" />
       <p>{address}</p>
