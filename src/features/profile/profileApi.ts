@@ -9,11 +9,11 @@ export const profileApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE }),
   endpoints: (builder) => ({
     getProfiles: builder.query<Profile[], void>({ query: () => "profiles" }),
-    getProfileById: builder.query({ query: (id) => `profile/${id}` }),
-    createProfile: builder.mutation({
+    getProfileById: builder.query<any, number>({ query: (id) => `profile/${id}` }),
+    createProfile: builder.mutation<void, any>({
       query: (profile) => ({ url: "profile", method: "POST", body: profile }),
     }),
-    editProfile: builder.mutation({
+    editProfile: builder.mutation<void, {id: number, profile: any}>({
       query: ({ id, profile }) => ({
         url: `profile/${id}`,
         method: "PUT",
