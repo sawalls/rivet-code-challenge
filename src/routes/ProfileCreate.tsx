@@ -6,7 +6,13 @@ export const ProfileCreate = () => {
   const handleSubmit = async (profile: any) => {
     await createProfile(profile);
   };
-  return <ProfileCreateEdit handleSubmitForm={handleSubmit} result={result} verb="create" />;
+  return (
+    <ProfileCreateEdit
+      handleSubmitForm={handleSubmit}
+      result={result}
+      verb="create"
+    />
+  );
 };
 
 export default ProfileCreate;

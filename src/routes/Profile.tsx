@@ -7,9 +7,11 @@ function Profile() {
   const id = useProfileIdParam();
   const profileResult = useGetProfileByIdQuery(id);
   // TODO: flesh this out a bit more. Error / loading states, etc.
-  return <RTKQueryWrapper useQueryHookResult={profileResult} operation="get profile">
-    <ProfileComponent profile={profileResult.data} />
-  </RTKQueryWrapper>;
+  return (
+    <RTKQueryWrapper useQueryHookResult={profileResult} operation="get profile">
+      <ProfileComponent profile={profileResult.data} />
+    </RTKQueryWrapper>
+  );
 }
 
 export default Profile;

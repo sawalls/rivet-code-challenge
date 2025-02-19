@@ -1,9 +1,19 @@
 import { Link } from "react-router-dom";
 
 // TODO: add typing here when it's added on to profileAPI
-export function Profile({ profile }: { profile: any; }) {
+export function Profile({ profile }: { profile: any }) {
   const {
-    id, first_name, last_name, phone, email, address, city, state, zip, photo, notes,
+    id,
+    first_name,
+    last_name,
+    phone,
+    email,
+    address,
+    city,
+    state,
+    zip,
+    photo,
+    notes,
   } = profile;
 
   return (

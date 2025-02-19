@@ -4,16 +4,23 @@ import type { Profile } from "./profileUtils";
 import RTKQueryError from "../util/RTKQueryError";
 import { ProfileForm } from "./ProfileForm";
 
-type ProfileVerb = 'create' | 'edit';
+type ProfileVerb = "create" | "edit";
 
 interface ProfileCreateEditProps {
   handleSubmitForm: (profile: any) => Promise<void>;
-  result: ReturnType<typeof useCreateProfileMutation | typeof useEditProfileMutation>[1];
+  result: ReturnType<
+    typeof useCreateProfileMutation | typeof useEditProfileMutation
+  >[1];
   verb: ProfileVerb;
   initialProfile?: Profile | undefined;
 }
 
-export function ProfileCreateEdit({ handleSubmitForm, result, verb, initialProfile }: Readonly<ProfileCreateEditProps>) {
+export function ProfileCreateEdit({
+  handleSubmitForm,
+  result,
+  verb,
+  initialProfile,
+}: Readonly<ProfileCreateEditProps>) {
   const { isLoading, isSuccess, isError, error, data } = result;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -31,7 +38,14 @@ export function ProfileCreateEdit({ handleSubmitForm, result, verb, initialProfi
     return <RTKQueryError error={error} operation={`profile ${verb}`} />;
   } else {
     // isUninitialized || isLoading
-    return <ProfileForm handleSubmit={handleSubmit} verb={verb} initialProfile={initialProfile} isLoading={isLoading} />;
+    return (
+      <ProfileForm
+        handleSubmit={handleSubmit}
+        verb={verb}
+        initialProfile={initialProfile}
+        isLoading={isLoading}
+      />
+    );
   }
 }
 

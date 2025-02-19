@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 import { Box } from "@mui/material";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 interface AppFrameProps {
   children: React.ReactNode;

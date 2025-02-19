@@ -5,9 +5,11 @@ import RTKQueryWrapper from "../features/util/RTKQueryWrapper";
 const ProfileList = () => {
   const result = useGetProfilesQuery();
 
-  return <RTKQueryWrapper useQueryHookResult={result} operation="get profiles">
-    <ProfileListComponent profiles={result.data} />
-  </RTKQueryWrapper>;
+  return (
+    <RTKQueryWrapper useQueryHookResult={result} operation="get profiles">
+      <ProfileListComponent profiles={result.data} />
+    </RTKQueryWrapper>
+  );
 };
 
 export default ProfileList;
