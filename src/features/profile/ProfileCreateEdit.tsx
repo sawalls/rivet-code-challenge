@@ -1,13 +1,14 @@
 import { Navigate } from "react-router-dom";
 import { useCreateProfileMutation, useEditProfileMutation } from "./profileApi";
-import type { Profile } from "./profileUtils";
+import type { Profile, ProfileNoId } from "./profileUtils";
 import RTKQueryError from "../util/RTKQueryError";
 import { ProfileForm } from "./ProfileForm";
+import { profileNoIdSchema } from "./schema";
 
 type ProfileVerb = "create" | "edit";
 
 interface ProfileCreateEditProps {
-  handleSubmitForm: (profile: any) => Promise<void>;
+  handleSubmitForm: (profile: ProfileNoId) => Promise<void>;
   result: ReturnType<
     typeof useCreateProfileMutation | typeof useEditProfileMutation
   >[1];
@@ -26,9 +27,11 @@ export function ProfileCreateEdit({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const profile = Object.fromEntries(formData.entries());
+    const profileNoId = await profileNoIdSchema.validate(
+      Object.fromEntries(formData.entries())
+    );
 
-    await handleSubmitForm(profile);
+    await handleSubmitForm(profileNoId);
   };
 
   if (isSuccess) {

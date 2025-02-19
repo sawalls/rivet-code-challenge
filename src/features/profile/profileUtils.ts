@@ -1,5 +1,4 @@
-type Profile = {
-  id: number;
+type ProfileNoId = {
   first_name: string; // 255 char max / required",
   last_name: string; // 255 char max / required",
   phone: string; // 255 char max / required",
@@ -12,4 +11,8 @@ type Profile = {
   notes: string; // 4GB max"
 };
 
-export { type Profile };
+interface Profile extends ProfileNoId {
+  id: number;
+}
+
+export type { Profile, ProfileNoId };
