@@ -1,9 +1,10 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useGetProfileByIdQuery } from "../features/profile/profileApi";
 import RTKQueryWrapper from "../features/util/RTKQueryWrapper";
+import { useProfileIdParam } from "../features/util/hooks";
 
 function Profile() {
-  const { id } = useParams();
+  const id = useProfileIdParam();
   const profileResult = useGetProfileByIdQuery(id);
   // TODO: flesh this out a bit more. Error / loading states, etc.
   return <RTKQueryWrapper useQueryHookResult={profileResult} operation="get profile">

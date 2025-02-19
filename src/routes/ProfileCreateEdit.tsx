@@ -1,10 +1,11 @@
 import React from 'react';
-import { Form, useNavigate, useParams } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 import { useCreateProfileMutation, useEditProfileMutation, useGetProfileByIdQuery } from "../features/profile/profileApi";
 import { type Profile } from '../features/profile/profileUtils';
 import RTKQueryWrapper from '../features/util/RTKQueryWrapper';
 import RTKQueryError from '../features/util/RTKQueryError';
 import { CircularProgress } from '@mui/material';
+import { useProfileIdParam } from '../features/util/hooks';
 
 export const ProfileCreate = () => {
   return <ProfileCreateEdit mutation={useCreateProfileMutation()} verb="create" />;
@@ -12,11 +13,11 @@ export const ProfileCreate = () => {
 
 export const ProfileEdit = () => {
   const mutation = useEditProfileMutation();
-  const { id } = useParams();
+  const id = useProfileIdParam();
   const result = useGetProfileByIdQuery(id);
 
   return <RTKQueryWrapper useQueryHookResult={result} operation="get profile">
-    <ProfileCreateEdit mutation={mutation} verb="edit" initialProfile={result.data} id={parseInt(id || "")} />
+    <ProfileCreateEdit mutation={mutation} verb="edit" initialProfile={result.data} id={id} />
   </RTKQueryWrapper>;
 }
 
