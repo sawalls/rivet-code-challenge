@@ -11,9 +11,18 @@ export const posIntSchema = string()
 export const profileNoIdSchema: ObjectSchema<ProfileNoId> = object({
   first_name: string().required().max(255),
   last_name: string().required().max(255),
-  phone: string().required().max(255),
+  phone: string()
+    .required()
+    .matches(
+      /\d*\d*\d*\d*\d*\d*\d*\d*\d*\d/,
+      "phone number must at least include 10 digits"
+    )
+    .max(255),
   email: string().required().max(255),
-  address: string().required().max(255),
+  address: string()
+    .required()
+    .matches(/\d/, "address must contain a number")
+    .max(255),
   city: string().required().max(255),
   state: string().required().max(255),
   zip: string().required().max(255),
