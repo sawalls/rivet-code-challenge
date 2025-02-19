@@ -7,7 +7,7 @@ const ProfileList = () => {
 
   return (
     <RTKQueryWrapper useQueryHookResult={result} operation="get profiles">
-      <ProfileListComponent profiles={result.data} />
+      {result.isSuccess && <ProfileListComponent profiles={result.data} />}
     </RTKQueryWrapper>
   );
 };

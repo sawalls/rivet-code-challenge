@@ -9,7 +9,9 @@ function Profile() {
   // TODO: flesh this out a bit more. Error / loading states, etc.
   return (
     <RTKQueryWrapper useQueryHookResult={profileResult} operation="get profile">
-      <ProfileComponent profile={profileResult.data} />
+      {profileResult.isSuccess && (
+        <ProfileComponent profile={profileResult.data} />
+      )}
     </RTKQueryWrapper>
   );
 }

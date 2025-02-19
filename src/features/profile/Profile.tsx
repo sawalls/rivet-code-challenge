@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
+import { Profile as ProfileType } from "./profileUtils";
 
 // TODO: add typing here when it's added on to profileAPI
-export function Profile({ profile }: { profile: any }) {
+export function Profile({ profile }: { profile: ProfileType }) {
   const {
     id,
     first_name,

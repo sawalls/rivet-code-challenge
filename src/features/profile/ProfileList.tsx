@@ -6,7 +6,7 @@ import type { Profile } from "./profileUtils";
 export default function ProfileListWrapped({
   profiles,
 }: {
-  profiles: Profile[] | undefined;
+  profiles: Profile[];
 }) {
   const lineItems =
     profiles &&
