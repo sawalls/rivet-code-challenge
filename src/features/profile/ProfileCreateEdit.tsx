@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useCreateProfileMutation, useEditProfileMutation } from "./profileApi";
 import type { Profile } from "./profileUtils";
 import RTKQueryError from "../util/RTKQueryError";
@@ -7,33 +7,27 @@ import { ProfileForm } from "./ProfileForm";
 type ProfileVerb = 'create' | 'edit';
 
 interface ProfileCreateEditProps {
-  mutation: ReturnType<typeof useCreateProfileMutation> | ReturnType<typeof useEditProfileMutation>;
+  handleSubmitForm: (profile: any) => Promise<void>;
+  result: ReturnType<typeof useCreateProfileMutation | typeof useEditProfileMutation>[1];
   verb: ProfileVerb;
   initialProfile?: Profile | undefined;
-  id?: number;
 }
 
-export function ProfileCreateEdit({ mutation, verb, initialProfile, id }: Readonly<ProfileCreateEditProps>) {
-  const [mutateProfile, { isLoading, isError, error }] = mutation;
-  const navigate = useNavigate();
+export function ProfileCreateEdit({ handleSubmitForm, result, verb, initialProfile }: Readonly<ProfileCreateEditProps>) {
+  const { isLoading, isSuccess, isError, error, data } = result;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const profile = Object.fromEntries(formData.entries());
 
-    let result;
-    if (verb === 'create') {
-      result = await mutateProfile(profile);
-    } else {
-      result = await mutateProfile({ id, profile });
-    }
-    if (!("error" in result)) {
-      navigate("/");
-    }
+    await handleSubmitForm(profile);
   };
 
-  if (isError) {
+  if (isSuccess) {
+    // TODO: stop relying on Navigate kludge
+    return <Navigate to={`/profile/${data.id}`} />;
+  } else if (isError) {
     return <RTKQueryError error={error} operation={`profile ${verb}`} />;
   } else {
     // isUninitialized || isLoading
