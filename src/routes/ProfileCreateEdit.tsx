@@ -12,11 +12,11 @@ export const ProfileCreate = () => {
 
 export const ProfileEdit = () => {
   const mutation = useEditProfileMutation();
-  const { id: profileId } = useParams();
-  const result = useGetProfileByIdQuery(profileId);
+  const { id } = useParams();
+  const result = useGetProfileByIdQuery(id);
 
   return <RTKQueryWrapper useQueryHookResult={result} operation="get profile">
-    <ProfileCreateEdit mutation={mutation} verb="edit" initialProfile={result.data} />
+    <ProfileCreateEdit mutation={mutation} verb="edit" initialProfile={result.data} id={parseInt(id || "")} />
   </RTKQueryWrapper>;
 }
 
@@ -26,10 +26,10 @@ interface ProfileCreateEditProps {
   mutation: ReturnType<typeof useCreateProfileMutation> | ReturnType<typeof useEditProfileMutation>;
   verb: ProfileVerb;
   initialProfile?: Profile | undefined;
+  id?: number;
 }
 
-function ProfileCreateEdit({ mutation, verb, initialProfile }: Readonly<ProfileCreateEditProps>) {
-  const { id: profileId } = useParams();
+function ProfileCreateEdit({ mutation, verb, initialProfile, id }: Readonly<ProfileCreateEditProps>) {
   const [mutateProfile, { isLoading, isError, error }] = mutation;
   const navigate = useNavigate();
 
@@ -42,7 +42,7 @@ function ProfileCreateEdit({ mutation, verb, initialProfile }: Readonly<ProfileC
     if (verb === 'create') {
       result = await mutateProfile(profile);
     } else {
-      result = await mutateProfile({ id: profileId, profile });
+      result = await mutateProfile({ id, profile });
     }
     if (!("error" in result)) {
       navigate("/");

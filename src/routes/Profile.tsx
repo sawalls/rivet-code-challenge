@@ -3,8 +3,8 @@ import { useGetProfileByIdQuery } from "../features/profile/profileApi";
 import RTKQueryWrapper from "../features/util/RTKQueryWrapper";
 
 function Profile() {
-  const { id: profileId } = useParams();
-  const profileResult = useGetProfileByIdQuery(profileId);
+  const { id } = useParams();
+  const profileResult = useGetProfileByIdQuery(id);
   // TODO: flesh this out a bit more. Error / loading states, etc.
   return <RTKQueryWrapper useQueryHookResult={profileResult} operation="get profile">
     <ProfileWrapped profile={profileResult.data} />
