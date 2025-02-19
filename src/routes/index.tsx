@@ -2,7 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import Root from "./Root";
 import ProfileList from "./ProfileList";
 import Profile from "./Profile";
-import { ProfileCreate, ProfileEdit } from "./ProfileCreateEdit";
+import { ProfileEdit } from "./ProfileEdit";
+import { ProfileCreate } from "./ProfileCreate";
 import ErrorPage from "../features/util/ErrorPage";
 
 export const createRouter = () => {
