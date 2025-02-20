@@ -49,7 +49,7 @@ export function ProfileCreateEdit({
     if (!isEmail(profileNoId.email)) {
       throw new Error("Invalid email address");
     }
-    if (!isURL(profileNoId.photo)) {
+    if (profileNoId.photo && !isURL(profileNoId.photo)) {
       throw new Error("Invalid photo URL");
     }
 
@@ -62,7 +62,7 @@ export function ProfileCreateEdit({
 
     if (!("error" in result)) {
       // TODO: docs suggest there's some more idiomatic way to do this than useNavigate
-      navigate("/profiles");
+      navigate(`/profiles/${id}`);
     }
   };
 

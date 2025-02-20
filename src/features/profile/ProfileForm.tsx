@@ -87,7 +87,6 @@ export function ProfileForm({
             type="text"
             name="state"
             defaultValue={initialProfile?.state}
-            required
           />
         </label>
         <label>
@@ -109,7 +108,6 @@ export function ProfileForm({
             type="text"
             name="photo"
             defaultValue={initialProfile?.photo}
-            required
           />
         </label>
       </p>
@@ -120,7 +118,6 @@ export function ProfileForm({
             placeholder="Your freeform notes go here"
             name="notes"
             defaultValue={initialProfile?.notes}
-            required
           />
         </label>
       </p>
