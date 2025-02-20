@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { useCreateProfileMutation, useEditProfileMutation } from "./profileApi";
+import { UseCreateProfileResult, UseEditProfileResult } from "./profileApi";
 import type { Profile, ProfileNoId } from "./profileUtils";
 import RTKQueryError from "../util/RTKQueryError";
 import { ProfileForm } from "./ProfileForm";
@@ -9,14 +9,14 @@ import isURL from "validator/lib/isURL";
 
 interface CreateSet {
   handleSubmitForm: (profile: ProfileNoId) => Promise<void>;
-  result: ReturnType<typeof useCreateProfileMutation>[1];
+  result: UseCreateProfileResult;
   verb: "create";
   initialProfile?: undefined;
 }
 
 interface EditSet {
   handleSubmitForm: (profile: ProfileNoId) => Promise<void>;
-  result: ReturnType<typeof useEditProfileMutation>[1];
+  result: UseEditProfileResult;
   verb: "edit";
   initialProfile: Profile;
 }
@@ -53,6 +53,8 @@ export function ProfileCreateEdit({
 
   if (isSuccess) {
     // TODO: stop relying on Navigate kludge
+    // A) navigate is allegedly gross. B) I don't know that Rivet's original API returned anything on create/edit
+    // @ts-ignore
     return <Navigate to={`/profile/${data.id}`} />;
   } else if (isError) {
     return <RTKQueryError error={error} operation={`profile ${verb}`} />;
