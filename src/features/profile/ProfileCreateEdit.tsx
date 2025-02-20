@@ -7,16 +7,23 @@ import { profileNoIdSchema } from "./schema";
 import { isEmail } from "validator";
 import isURL from "validator/lib/isURL";
 
-type ProfileVerb = "create" | "edit";
-
-interface ProfileCreateEditProps {
+interface CreateSet {
   handleSubmitForm: (profile: ProfileNoId) => Promise<void>;
-  result: ReturnType<
-    typeof useCreateProfileMutation | typeof useEditProfileMutation
-  >[1];
-  verb: ProfileVerb;
-  initialProfile?: Profile | undefined;
+  result: ReturnType<typeof useCreateProfileMutation>[1];
+  verb: "create";
+  initialProfile?: undefined;
 }
+
+interface EditSet {
+  handleSubmitForm: (profile: ProfileNoId) => Promise<void>;
+  result: ReturnType<typeof useEditProfileMutation>[1];
+  verb: "edit";
+  initialProfile: Profile;
+}
+
+type ProfileCreateEditProps = CreateSet | EditSet;
+
+type ProfileVerb = ProfileCreateEditProps["verb"];
 
 export function ProfileCreateEdit({
   handleSubmitForm,
