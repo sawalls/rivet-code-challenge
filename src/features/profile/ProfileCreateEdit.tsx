@@ -1,5 +1,5 @@
-import { Navigate } from "react-router-dom";
-import { UseCreateProfileResult, UseEditProfileResult } from "./profileApi";
+import { useNavigate } from "react-router-dom";
+import { UseCreateProfileMutation, UseEditProfileMutation } from "./profileApi";
 import type { Profile, ProfileNoId } from "./profileUtils";
 import RTKQueryError from "../util/RTKQueryError";
 import { ProfileForm } from "./ProfileForm";
@@ -7,18 +7,20 @@ import { profileNoIdSchema } from "./schema";
 import { isEmail } from "validator";
 import isURL from "validator/lib/isURL";
 
+// passing verb is technically redundant since you could check for id
+// but it's way more readable and useble in practice
 interface CreateSet {
-  handleSubmitForm: (profile: ProfileNoId) => Promise<void>;
-  result: UseCreateProfileResult;
+  mutation: UseCreateProfileMutation;
   verb: "create";
   initialProfile?: undefined;
+  id?: undefined;
 }
 
 interface EditSet {
-  handleSubmitForm: (profile: ProfileNoId) => Promise<void>;
-  result: UseEditProfileResult;
+  mutation: UseEditProfileMutation;
   verb: "edit";
   initialProfile: Profile;
+  id: number;
 }
 
 type ProfileCreateEditProps = CreateSet | EditSet;
@@ -26,18 +28,21 @@ type ProfileCreateEditProps = CreateSet | EditSet;
 type ProfileVerb = ProfileCreateEditProps["verb"];
 
 export function ProfileCreateEdit({
-  handleSubmitForm,
-  result,
+  mutation,
   verb,
   initialProfile,
+  id,
 }: Readonly<ProfileCreateEditProps>) {
-  const { isLoading, isSuccess, isError, error, data } = result;
+  const navigate = useNavigate();
+
+  // pulling mutation[0] inside of the verb below instead of here check helps it typecheck
+  const { isLoading, isError, error } = mutation[1];
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     // First validate the shape (redundant but I wanna show off)
-    const profileNoId = await profileNoIdSchema.validate(
+    const profileNoId: ProfileNoId = await profileNoIdSchema.validate(
       Object.fromEntries(formData.entries())
     );
     // Then validate some string rules
@@ -48,15 +53,20 @@ export function ProfileCreateEdit({
       throw new Error("Invalid photo URL");
     }
 
-    await handleSubmitForm(profileNoId);
+    let result;
+    if (verb === "create") {
+      result = await mutation[0](profileNoId);
+    } else {
+      result = await mutation[0]({ id: id, profile: profileNoId });
+    }
+
+    if (!("error" in result)) {
+      // TODO: docs suggest there's some more idiomatic way to do this than useNavigate
+      navigate("/profiles");
+    }
   };
 
-  if (isSuccess) {
-    // TODO: stop relying on Navigate kludge
-    // A) navigate is allegedly gross. B) I don't know that Rivet's original API returned anything on create/edit
-    // @ts-ignore
-    return <Navigate to={`/profile/${data.id}`} />;
-  } else if (isError) {
+  if (isError) {
     return <RTKQueryError error={error} operation={`profile ${verb}`} />;
   } else {
     // isUninitialized || isLoading

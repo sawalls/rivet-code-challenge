@@ -7,23 +7,19 @@ import { useProfileIdParam } from "../features/util/hooks";
 import { ProfileCreateEdit } from "../features/profile/ProfileCreateEdit";
 
 export const ProfileEdit = () => {
-  const [editProfile, mutationResult] = useEditProfileMutation();
+  const mutation = useEditProfileMutation();
   const id = useProfileIdParam();
   const queryResult = useGetProfileByIdQuery(id);
   const { isSuccess, data } = queryResult;
-
-  const handleSubmitForm = async (profile: any) => {
-    await editProfile({ id, profile });
-  };
 
   return (
     <RTKQueryWrapper useQueryHookResult={queryResult} operation="get profile">
       {isSuccess && (
         <ProfileCreateEdit
-          handleSubmitForm={handleSubmitForm}
-          result={mutationResult}
+          mutation={mutation}
           verb="edit"
           initialProfile={data}
+          id={id}
         />
       )}
     </RTKQueryWrapper>

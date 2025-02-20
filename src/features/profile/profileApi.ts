@@ -35,8 +35,8 @@ export const profileApi = createApi({
 // So I manually make types for these two mutations since I'll pass them to ProfileCreateEdit
 export type UseCreateProfileResult = TypedUseMutationResult<void, ProfileNoId, typeof baseQuery>;
 export type UseEditProfileResult = TypedUseMutationResult<void, { id: number; profile: ProfileNoId }, typeof baseQuery>;
-export type UseCreateProfileMutation = [ReturnType<typeof useCreateProfileMutation>[0], UseCreateProfileResult];
-export type UseEditProfileMutation = [ReturnType<typeof useEditProfileMutation>[0], UseEditProfileResult];
+export type UseCreateProfileMutation = Readonly<[ReturnType<typeof useCreateProfileMutation>[0], UseCreateProfileResult]>;
+export type UseEditProfileMutation = Readonly<[ReturnType<typeof useEditProfileMutation>[0], UseEditProfileResult]>;
 
 export const {
   useGetProfilesQuery,
