@@ -25,7 +25,10 @@ export const profileNoIdSchema: ObjectSchema<ProfileNoId> = object({
     .max(255),
   city: string().required().max(255),
   state: string().required().max(255),
-  zip: string().required().max(255),
+  zip: string()
+    .required()
+    .matches(/\d*\d*\d*\d*\d/, "ZIP codes must include at least 5 digits")
+    .max(255),
   photo: string().required().max(255),
   notes: string().required().max(4294967295),
 });
