@@ -62,7 +62,7 @@ export function ProfileCreateEdit({
 
     if (!("error" in result)) {
       // TODO: docs suggest there's some more idiomatic way to do this than useNavigate
-      navigate(`/profiles/${id}`);
+      navigate(id ? `/profile/${id}` : "/");
     }
   };
 

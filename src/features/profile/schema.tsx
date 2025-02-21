@@ -24,7 +24,13 @@ export const profileNoIdSchema: ObjectSchema<ProfileNoId> = object({
     .matches(/\d/, "address must contain a number")
     .max(255),
   city: string().required().max(255),
-  state: string().length(2, "state must be exactly 2 characters (or absent)"),
+  state: string()
+    .optional()
+    .test(
+      "len",
+      "state must be exactly 2 characters (or absent)",
+      (val) => !val || val.length === 2
+    ),
   zip: string()
     .required()
     .matches(/\d*\d*\d*\d*\d/, "ZIP codes must include at least 5 digits")
