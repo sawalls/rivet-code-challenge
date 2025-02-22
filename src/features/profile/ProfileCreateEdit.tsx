@@ -6,6 +6,8 @@ import { ProfileForm } from "./ProfileForm";
 import { profileNoIdSchema } from "./schema";
 import { isEmail } from "validator";
 import isURL from "validator/lib/isURL";
+import { ValidationError } from "yup";
+import { useState } from "react";
 
 // passing verb is technically redundant since you could check for id
 // but it's way more readable and useble in practice
@@ -27,6 +29,11 @@ type ProfileCreateEditProps = CreateSet | EditSet;
 
 type ProfileVerb = ProfileCreateEditProps["verb"];
 
+export type ProfileFormErrorInfo = {
+  path: string | undefined;
+  message: string;
+};
+
 export function ProfileCreateEdit({
   mutation,
   verb,
@@ -34,6 +41,8 @@ export function ProfileCreateEdit({
   id,
 }: Readonly<ProfileCreateEditProps>) {
   const navigate = useNavigate();
+  const [formErrorInfo, setFormErrorInfo] =
+    useState<ProfileFormErrorInfo | null>(null);
 
   // pulling mutation[0] inside of the verb below instead of here check helps it typecheck
   const { isLoading, isError, error } = mutation[1];
@@ -42,15 +51,24 @@ export function ProfileCreateEdit({
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     // First validate the shape (redundant but I wanna show off)
-    const profileNoId: ProfileNoId = await profileNoIdSchema.validate(
-      Object.fromEntries(formData.entries())
-    );
-    // Then validate some string rules
-    if (!isEmail(profileNoId.email)) {
-      throw new Error("Invalid email address");
-    }
-    if (profileNoId.photo && !isURL(profileNoId.photo)) {
-      throw new Error("Invalid photo URL");
+    let profileNoId: ProfileNoId;
+    try {
+      profileNoId = await profileNoIdSchema.validate(
+        Object.fromEntries(formData.entries())
+      );
+      // Then validate some string rules
+      if (!isEmail(profileNoId.email)) {
+        throw new ValidationError("Invalid email address", undefined, "email");
+      }
+      if (profileNoId.photo && !isURL(profileNoId.photo)) {
+        throw new ValidationError("Invalid URL", undefined, "photo");
+      }
+    } catch (e) {
+      if (e instanceof ValidationError) {
+        setFormErrorInfo({ path: e.path, message: e.message });
+        return;
+      }
+      throw e;
     }
 
     let result;
@@ -73,9 +91,9 @@ export function ProfileCreateEdit({
     return (
       <ProfileForm
         handleSubmit={handleSubmit}
-        verb={verb}
         initialProfile={initialProfile}
         isLoading={isLoading}
+        errorInfo={formErrorInfo}
       />
     );
   }

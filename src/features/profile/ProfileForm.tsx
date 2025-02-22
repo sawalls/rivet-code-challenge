@@ -1,33 +1,84 @@
 import {
   Button,
+  FormHelperText,
   FormLabel,
   OutlinedInput,
-  Stack,
   styled,
   TextField,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { Form } from "react-router-dom";
 import type { Profile } from "./profileUtils";
-import type { ProfileVerb } from "./ProfileCreateEdit";
-
-interface ProfileFormProps {
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  verb: ProfileVerb;
-  initialProfile?: Profile | undefined;
-  isLoading: boolean;
-}
+import type { ProfileFormErrorInfo } from "./ProfileCreateEdit";
 
 const FlexGrid = styled(Grid)(() => ({
   display: "flex",
   flexDirection: "column",
+  position: "relative",
 }));
+
+const ProfileInput = ({
+  path,
+  label,
+  placeholder,
+  initialProfile,
+  required = false,
+  type = "text",
+  errorInfo = null,
+}: {
+  path: keyof Profile;
+  label: string;
+  placeholder: string;
+  initialProfile?: Profile;
+  required?: boolean;
+  type?: string;
+  errorInfo?: ProfileFormErrorInfo | null;
+}) => {
+  let helperText = "";
+  if (errorInfo?.path === path) {
+    helperText = errorInfo.message;
+  }
+  return (
+    <FlexGrid size={{ xs: 12, md: 6 }}>
+      <FormLabel htmlFor={path} required={required}>
+        {label}
+      </FormLabel>
+      <OutlinedInput
+        id={path}
+        name={path}
+        placeholder={placeholder}
+        size="small"
+        defaultValue={initialProfile?.[path]}
+        required={required}
+        type={type}
+        error={!!helperText}
+      />
+      <FormHelperText
+        error={!!helperText}
+        style={{
+          position: "absolute",
+          top: "100%",
+          left: 0,
+          zIndex: 1,
+        }}
+      >
+        {helperText}
+      </FormHelperText>
+    </FlexGrid>
+  );
+};
+
+interface ProfileFormProps {
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  initialProfile?: Profile | undefined;
+  isLoading: boolean;
+  errorInfo: ProfileFormErrorInfo | null;
+}
 
 export function ProfileForm({
   handleSubmit,
-  verb,
   initialProfile,
   isLoading,
+  errorInfo,
 }: Readonly<ProfileFormProps>) {
   return (
     <Grid
@@ -38,126 +89,80 @@ export function ProfileForm({
       noValidate
       autoComplete="off"
     >
-      <FlexGrid size={{ xs: 12, md: 6 }}>
-        <FormLabel htmlFor="first-name" required>
-          First name
-        </FormLabel>
-        <OutlinedInput
-          id="first-name"
-          name="first_name"
-          placeholder="First Name"
-          size="small"
-          defaultValue={initialProfile?.first_name}
-          required
-        />
-      </FlexGrid>
-      <FlexGrid size={{ xs: 12, md: 6 }}>
-        <FormLabel htmlFor="last-name" required>
-          Last name
-        </FormLabel>
-        <OutlinedInput
-          id="last-name"
-          name="last_name"
-          placeholder="Last Name"
-          size="small"
-          defaultValue={initialProfile?.last_name}
-          required
-        />
-      </FlexGrid>
-      <FlexGrid size={{ xs: 12 }}>
-        <FormLabel htmlFor="address" required>
-          Address
-        </FormLabel>
-        <OutlinedInput
-          id="address"
-          name="address"
-          placeholder="221B Replace Me"
-          size="small"
-          defaultValue={initialProfile?.address}
-          required
-        />
-      </FlexGrid>
-      <FlexGrid size={{ xs: 6 }}>
-        <FormLabel htmlFor="city" required>
-          City
-        </FormLabel>
-        <OutlinedInput
-          id="city"
-          name="city"
-          type="city"
-          placeholder="Faketown"
-          size="small"
-          defaultValue={initialProfile?.city}
-          required
-        />
-      </FlexGrid>
-      <FlexGrid size={{ xs: 6 }}>
-        <FormLabel htmlFor="state" required>
-          State
-        </FormLabel>
-        <OutlinedInput
-          id="state"
-          name="state"
-          type="state"
-          placeholder="ZZ"
-          size="small"
-          defaultValue={initialProfile?.state}
-          required
-        />
-      </FlexGrid>
-      <FlexGrid size={{ xs: 6 }}>
-        <FormLabel htmlFor="zip" required>
-          Zip
-        </FormLabel>
-        <OutlinedInput
-          id="zip"
-          name="zip"
-          type="zip"
-          placeholder="11111"
-          size="small"
-          defaultValue={initialProfile?.zip}
-          required
-        />
-      </FlexGrid>
-      <FlexGrid size={{ xs: 6 }}>
-        <FormLabel htmlFor="phone" required>
-          Phone
-        </FormLabel>
-        <OutlinedInput
-          id="phone"
-          name="phone"
-          type="phone"
-          placeholder="(555) 555-0199"
-          size="small"
-          defaultValue={initialProfile?.phone}
-          required
-        />
-      </FlexGrid>
-      <FlexGrid size={{ xs: 12 }}>
-        <FormLabel htmlFor="email" required>
-          Email
-        </FormLabel>
-        <OutlinedInput
-          id="email"
-          name="email"
-          type="email"
-          placeholder="replace_this@fictitious.example"
-          size="small"
-          defaultValue={initialProfile?.email}
-          required
-        />
-      </FlexGrid>
-      <FlexGrid size={{ xs: 12 }}>
-        <FormLabel htmlFor="photo">Photo</FormLabel>
-        <OutlinedInput
-          id="photo"
-          name="photo"
-          type="photo"
-          placeholder="fakeurl.fictitious.example/photo.jpg"
-          size="small"
-          defaultValue={initialProfile?.photo}
-        />
-      </FlexGrid>
+      <ProfileInput
+        path="first_name"
+        label="First Name"
+        placeholder="First Name"
+        initialProfile={initialProfile}
+        required
+        errorInfo={errorInfo}
+      />
+      <ProfileInput
+        path="last_name"
+        label="Last Name"
+        placeholder="Last Name"
+        initialProfile={initialProfile}
+        required
+        errorInfo={errorInfo}
+      />
+      <ProfileInput
+        path="address"
+        label="Address"
+        placeholder="221B Replace Me"
+        initialProfile={initialProfile}
+        required
+        errorInfo={errorInfo}
+      />
+      <ProfileInput
+        path="city"
+        label="City"
+        placeholder="Faketown"
+        initialProfile={initialProfile}
+        required
+        errorInfo={errorInfo}
+      />
+      <ProfileInput
+        path="state"
+        label="State"
+        placeholder="ZZ"
+        initialProfile={initialProfile}
+        required
+        errorInfo={errorInfo}
+      />
+      <ProfileInput
+        path="zip"
+        label="Zip"
+        placeholder="11111"
+        initialProfile={initialProfile}
+        required
+        errorInfo={errorInfo}
+      />
+      <ProfileInput
+        path="phone"
+        label="Phone"
+        placeholder="(555) 555-0199"
+        initialProfile={initialProfile}
+        required
+        type="tel"
+        errorInfo={errorInfo}
+      />
+      <ProfileInput
+        path="email"
+        label="Email"
+        placeholder="replace_this@fictitious.example"
+        initialProfile={initialProfile}
+        required
+        type="email"
+        errorInfo={errorInfo}
+      />
+      <ProfileInput
+        path="photo"
+        label="Photo URL"
+        placeholder="fakeurl.fictitious.example/photo.jpg"
+        initialProfile={initialProfile}
+        type="url"
+        errorInfo={errorInfo}
+      />
       <FlexGrid size={{ xs: 12 }}>
         <FormLabel htmlFor="notes">Notes</FormLabel>
         <TextField

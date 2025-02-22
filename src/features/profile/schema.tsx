@@ -14,7 +14,7 @@ export const profileNoIdSchema: ObjectSchema<ProfileNoId> = object({
   phone: string()
     .required()
     .matches(
-      /\d*\d*\d*\d*\d*\d*\d*\d*\d*\d/,
+      /\d.*\d.*\d.*\d.*\d.*\d.*\d.*\d.*\d.*\d/,
       "phone number must at least include 10 digits"
     )
     .max(255),
@@ -33,7 +33,7 @@ export const profileNoIdSchema: ObjectSchema<ProfileNoId> = object({
     ),
   zip: string()
     .required()
-    .matches(/\d*\d*\d*\d*\d/, "ZIP codes must include at least 5 digits")
+    .matches(/\d.*\d.*\d.*\d.*\d/, "ZIP codes must include at least 5 digits")
     .max(255),
   photo: string().max(255),
   notes: string().max(4294967295),
