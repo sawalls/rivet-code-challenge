@@ -1,14 +1,18 @@
 import { Box } from "@mui/material";
 import { useGetProfilesQuery } from "./profileApi";
+import { useUnsafeProfileIdParam } from "../util/hooks";
 
 const Status = () => {
-  // TODO: add currently selected profile.
   const profilesResult = useGetProfilesQuery();
+  const selectedId = useUnsafeProfileIdParam();
 
   let innerElement;
   if (profilesResult.isSuccess) {
     const profiles = profilesResult.data;
     innerElement = `Loaded ${profiles.length} profile(s).`;
+    if (selectedId) {
+      innerElement += ` Selected profile: ${selectedId}`;
+    }
   } else {
     innerElement = "Loading profiles...";
   }
