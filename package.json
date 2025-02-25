@@ -38,8 +38,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
   "browserslist": {
@@ -59,6 +58,8 @@
     "@types/lodash": "^4.14.195",
     "@types/validator": "^13.12.2",
     "eslint-config-prettier": "^10.0.1",
-    "prettier": "^3.5.1"
+    "eslint-config-react-app": "^7.0.1",
+    "prettier": "^3.5.1",
+    "vite-plugin-eslint": "^1.8.1"
   }
 }
