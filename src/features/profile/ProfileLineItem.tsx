@@ -20,7 +20,7 @@ const ProfileLineItem = ({ profile }: ProfileLineItemArgs) => {
         }}
       >
         <Stack direction={"row"} spacing={1}>
-          <Photo profile={profile} />
+          <Photo profile={profile} size="3.5em" />
           <Stack spacing={1} style={{ padding: ".5em" }}>
             <Box>
               <h3 style={{ margin: 0 }}>

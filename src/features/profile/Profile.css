@@ -1,0 +1,19 @@
+.profile-details {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.profile-details dt {
+  font-weight: bold;
+  margin-top: 1em;
+}
+
+.profile-details dd {
+  margin: 0 0 1em 0;
+  padding: 0;
+}
+
+.profile-details p {
+  margin: 0;
+}

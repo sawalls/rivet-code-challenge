@@ -1,5 +1,11 @@
 import { Avatar, Typography } from "@mui/material";
 import { Profile } from "./profileUtils";
+import { ResponsiveStyleValue } from "@mui/system";
+
+type PhotoProps = {
+  profile: Profile;
+  size: ResponsiveStyleValue<string | number>;
+};
 
 // This bit pulled from the MUI Avatar usage
 function stringToColor(string: string) {
@@ -25,15 +31,15 @@ function stringToColor(string: string) {
   return color;
 }
 
-export default function Photo({ profile }: { profile: Profile }) {
+export default function Photo({ profile, size }: PhotoProps) {
   const { first_name, last_name, photo } = profile;
   return (
     <Avatar
       alt={`${first_name} ${last_name}`}
       src={photo}
       sx={{
-        width: "5em",
-        height: "5em",
+        width: size,
+        height: size,
         bgcolor: stringToColor(`${first_name} ${last_name}`),
       }}
       variant="square"
