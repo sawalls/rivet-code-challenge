@@ -6,12 +6,11 @@ import { Profile as ProfileComponent } from "../features/profile/Profile";
 function Profile() {
   const id = useProfileIdParam();
   const profileResult = useGetProfileByIdQuery(id);
-  // TODO: flesh this out a bit more. Error / loading states, etc.
+  const { data, isSuccess } = profileResult;
+
   return (
     <RTKQueryWrapper useQueryHookResult={profileResult} operation="get profile">
-      {profileResult.isSuccess && (
-        <ProfileComponent profile={profileResult.data} />
-      )}
+      {isSuccess && <ProfileComponent profile={data} />}
     </RTKQueryWrapper>
   );
 }

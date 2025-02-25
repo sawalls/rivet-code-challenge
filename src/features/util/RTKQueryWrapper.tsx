@@ -1,5 +1,12 @@
 import { UseQueryHookResult } from "@reduxjs/toolkit/dist/query/react/buildHooks";
 import RTKQueryError from "./RTKQueryError";
+import { LinearProgress, styled } from "@mui/material";
+
+const HideableLinearProgress = styled(LinearProgress, {
+  shouldForwardProp: (prop) => prop !== "hide",
+})(({ hide }: { hide: boolean }) => ({
+  visibility: hide ? "hidden" : "visible",
+}));
 
 function RTKQueryWrapper({
   children,
@@ -10,17 +17,29 @@ function RTKQueryWrapper({
   useQueryHookResult: UseQueryHookResult<any, any>;
   operation?: string | undefined;
 }) {
-  const { isError, error, isLoading, isSuccess } = useQueryHookResult;
+  const { isError, error, isLoading, isSuccess, isFetching } =
+    useQueryHookResult;
   if (isError) {
     return <RTKQueryError error={error} operation={operation} />;
   } else if (isLoading) {
-    return <div>Loading... current operation: {operation}</div>;
+    return (
+      <div>
+        <LinearProgress />
+        <p>Loading... current operation: {operation}</p>
+      </div>
+    );
   } else if (!isSuccess) {
     throw new Error(
-      "Assertion failed. Unexpected state. isSuccess is false but isError and isLoading are also false.",
+      "Assertion failed. Unexpected state. isSuccess is false but isError and isLoading are also false."
     );
   }
-  return <>{children}</>;
+
+  return (
+    <>
+      <HideableLinearProgress hide={!isFetching} />
+      {children}
+    </>
+  );
 }
 
 export default RTKQueryWrapper;
