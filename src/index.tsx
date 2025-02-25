@@ -9,13 +9,13 @@ import store from "./store";
 import { ErrorReport } from "./features/util/ErrorPage";
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement,
+  document.getElementById("root") as HTMLElement
 );
+
+const router = createRouter();
 
 function AppRouterProvider() {
   try {
-    const router = createRouter();
-
     return <RouterProvider router={router} />;
   } catch (error) {
     // It is important to use ErrorReport and not ErrorPage because ErrorPage depends on the router
@@ -28,5 +28,5 @@ root.render(
     <Provider store={store}>
       <AppRouterProvider />
     </Provider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
