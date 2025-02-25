@@ -1,5 +1,6 @@
 import { isRouteErrorResponse, Link, useRouteError } from "react-router-dom";
 import AppFrame from "./AppFrame";
+import { Alert, AlertTitle, styled } from "@mui/material";
 
 function ErrorPage() {
   let error = useRouteError();
@@ -11,49 +12,68 @@ function ErrorPage() {
   );
 }
 
+const EmphasizedTitle = styled(AlertTitle)(() => ({
+  fontSize: "1.5em",
+  fontWeight: "bold",
+}));
+
 function ErrorReport({ error }: { error: unknown }) {
-  const components = [<h2 key="error-comp-header">Error</h2>];
+  const components = [];
   if (isRouteErrorResponse(error)) {
     if (error.status === 404) {
-      components.push(<h2 key="error-comp-404">Page not found.</h2>);
+      components.push(
+        <EmphasizedTitle key="error-comp-404">Page not found.</EmphasizedTitle>
+      );
       components.push(
         <p key="error-comp-404-explanation">
           If you were sent here by the app, or are sure the address is correct,
           contact Schala. Otherwise, please check that you typed the URL
           correctly.
-        </p>,
+        </p>
       );
     } else {
-      components.push(<h3 key="error-comp-status">Status: {error.status}</h3>);
       components.push(
-        <h3 key="error-comp-status-text">Status Text: {error.statusText}</h3>,
+        <EmphasizedTitle key="error-comp-status">
+          Status: {error.status}
+        </EmphasizedTitle>
       );
       components.push(
-        <h3 key="error-comp-data">Data: {String(error.data)}</h3>,
+        <h3 key="error-comp-status-text">Status Text: {error.statusText}</h3>
+      );
+      components.push(
+        <h3 key="error-comp-data">Data: {String(error.data)}</h3>
       );
     }
   } else if (error instanceof Error) {
-    components.push(<h3 key="error-comp-name">Name: {error.name}</h3>);
+    components.push(
+      <EmphasizedTitle key="error-comp-name">
+        Name: {error.name}
+      </EmphasizedTitle>
+    );
     components.push(<h3 key="error-comp-message">Message: {error.message}</h3>);
     if (error.stack) {
       components.push(
         <pre key="error-comp-stack" style={{ textAlign: "left" }}>
           {error.stack}
-        </pre>,
+        </pre>
       );
     }
     if (error.cause) {
       components.push(
-        <h3 key="error-comp-cause">Cause: {String(error.cause)}</h3>,
+        <h3 key="error-comp-cause">Cause: {String(error.cause)}</h3>
       );
     }
   } else {
+    components.push(
+      <EmphasizedTitle key="error-comp-1">Unknown error type</EmphasizedTitle>
+    );
     components.push(<h2 key="error-comp-2">Message: {String(error)}</h2>);
   }
+  //<h2 key="error-comp-header">Error</h2>
   return (
-    <div style={{ textAlign: "center", width: "75%", justifySelf: "center" }}>
+    <Alert severity="error" sx={{ bgcolor: "background.paper" }}>
       {components}
-    </div>
+    </Alert>
   );
 }
 

@@ -39,7 +39,17 @@ function AppFrame({ children }: AppFrameProps) {
           </AppBar>
         </Box>{" "}
       </header>
-      {children}
+      <Box
+        sx={{
+          width: "32em",
+          boxSizing: "border-box",
+          padding: ".5em",
+          margin: "0 auto",
+          maxWidth: "100%",
+        }}
+      >
+        {children}
+      </Box>
     </div>
   );
 }
