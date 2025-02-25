@@ -6,6 +6,7 @@ const HideableLinearProgress = styled(LinearProgress, {
   shouldForwardProp: (prop) => prop !== "hide",
 })(({ hide }: { hide: boolean }) => ({
   visibility: hide ? "hidden" : "visible",
+  width: "100%",
 }));
 
 function RTKQueryWrapper({
