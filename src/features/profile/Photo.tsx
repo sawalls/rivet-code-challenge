@@ -3,7 +3,7 @@ import { Profile } from "./profileUtils";
 import { ResponsiveStyleValue } from "@mui/system";
 
 type PhotoProps = {
-  profile: Profile;
+  profile: Profile | undefined;
   size: ResponsiveStyleValue<string | number>;
 };
 
@@ -32,7 +32,11 @@ function stringToColor(string: string) {
 }
 
 export default function Photo({ profile, size }: PhotoProps) {
-  const { first_name, last_name, photo } = profile;
+  const { first_name, last_name, photo } = profile || {
+    first_name: "",
+    last_name: "",
+    photo: "",
+  };
   return (
     <Avatar
       alt={`${first_name} ${last_name}`}
@@ -44,12 +48,14 @@ export default function Photo({ profile, size }: PhotoProps) {
       }}
       variant="square"
     >
-      <Typography
-        sx={{
-          fontSize: "2em",
-          float: "left", // hack to break out of the underline from Link
-        }}
-      >{`${first_name[0]}${last_name[0]}`}</Typography>
+      {profile && (
+        <Typography
+          sx={{
+            fontSize: "2em",
+            float: "left", // hack to break out of the underline from Link
+          }}
+        >{`${first_name[0]}${last_name[0]}`}</Typography>
+      )}
     </Avatar>
   );
 }

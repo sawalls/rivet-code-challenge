@@ -9,6 +9,7 @@ import {
 import Grid from "@mui/material/Grid2";
 import type { Profile } from "./profileUtils";
 import type { ProfileFormErrorInfo } from "./ProfileCreateEdit";
+import Photo from "./Photo";
 
 const FlexGrid = styled(Grid)(() => ({
   display: "flex",
@@ -155,14 +156,19 @@ export function ProfileForm({
         type="email"
         errorInfo={errorInfo}
       />
-      <ProfileInput
-        path="photo"
-        label="Photo URL"
-        placeholder="fakeurl.fictitious.example/photo.jpg"
-        initialProfile={initialProfile}
-        type="url"
-        errorInfo={errorInfo}
-      />
+      <Grid size={4}>
+        <Photo profile={initialProfile} size="3.5em" />
+      </Grid>
+      <Grid size={8}>
+        <ProfileInput
+          path="photo"
+          label="Photo URL"
+          placeholder="fakeurl.fictitious.example/photo.jpg"
+          initialProfile={initialProfile}
+          type="url"
+          errorInfo={errorInfo}
+        />
+      </Grid>
       <FlexGrid size={{ xs: 12 }}>
         <FormLabel htmlFor="notes">Notes</FormLabel>
         <TextField
