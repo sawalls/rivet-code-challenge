@@ -10,15 +10,27 @@ const baseQuery = fetchBaseQuery({ baseUrl: API_BASE });
 export const profileApi = createApi({
   reducerPath: "profileApi",
   baseQuery: baseQuery,
+  tagTypes: ["Profile"],
   // note: went back and forth on having backend responses validated and decided for performance it would be better to fail on access
   // keep in mind that means there can be lots of "impossible" types in the frontend if the backend is misbehaving
   endpoints: (builder) => ({
-    getProfiles: builder.query<Profile[], void>({ query: () => "profiles" }),
+    getProfiles: builder.query<Profile[], void>({
+      query: () => "profiles",
+      providesTags: (result) =>
+        result
+          ? [
+              { type: "Profile", id: "LIST" },
+              ...result.map(({ id }) => ({ type: "Profile" as const, id })),
+            ]
+          : [{ type: "Profile", id: "LIST" }],
+    }),
     getProfileById: builder.query<Profile, number>({
       query: (id) => `profile/${id}`,
+      providesTags: (_result, _error, id) => [{ type: "Profile", id }],
     }),
     createProfile: builder.mutation<void, ProfileNoId>({
       query: (profile) => ({ url: "profile", method: "POST", body: profile }),
+      invalidatesTags: [{ type: "Profile", id: "LIST" }],
     }),
     editProfile: builder.mutation<void, { id: number; profile: ProfileNoId }>({
       query: ({ id, profile }) => ({
@@ -26,6 +38,10 @@ export const profileApi = createApi({
         method: "PUT",
         body: profile,
       }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Profile", id },
+        { type: "Profile", id: "LIST" },
+      ],
     }),
   }),
 });
