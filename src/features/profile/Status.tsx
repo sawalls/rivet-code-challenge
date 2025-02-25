@@ -13,8 +13,7 @@ const Status = () => {
     if (selectedId) {
       innerElement += ` Selected profile: ${selectedId}`;
     }
-  }
-  if (profilesResult.isError) {
+  } else if (profilesResult.isError) {
     innerElement = ""; // The error handlers will show a better error. Just get out of the way.
   } else {
     innerElement = "Loading profiles...";
