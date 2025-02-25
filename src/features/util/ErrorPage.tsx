@@ -12,10 +12,16 @@ function ErrorPage() {
   );
 }
 
-const EmphasizedTitle = styled(AlertTitle)(() => ({
+export const EmphasizedTitle = styled(AlertTitle)(() => ({
   fontSize: "1.5em",
   fontWeight: "bold",
 }));
+
+export const ErrorAlert = ({ children }: { children: React.ReactNode }) => (
+  <Alert severity="error" sx={{ bgcolor: "background.paper" }}>
+    {children}
+  </Alert>
+);
 
 function ErrorReport({ error }: { error: unknown }) {
   const components = [];
@@ -70,11 +76,7 @@ function ErrorReport({ error }: { error: unknown }) {
     components.push(<h2 key="error-comp-2">Message: {String(error)}</h2>);
   }
   //<h2 key="error-comp-header">Error</h2>
-  return (
-    <Alert severity="error" sx={{ bgcolor: "background.paper" }}>
-      {components}
-    </Alert>
-  );
+  return <ErrorAlert>{components}</ErrorAlert>;
 }
 
 export { ErrorReport, ErrorPage };
