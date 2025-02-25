@@ -14,3 +14,36 @@ code {
   font-family:
     source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+/* For AppFrame.tsx */
+
+.App-header-box {
+  flex-grow: 1;
+  width: 50em;
+  box-sizing: border-box;
+  padding: 0.5em;
+  margin: 0 auto;
+  max-width: 100%;
+  align-items: center;
+}
+
+.App-children-box {
+  width: 32em;
+  box-sizing: border-box;
+  padding: 0.5em;
+  margin: 0 auto;
+  max-width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.App-toolbar {
+  justify-content: center;
+}
+
+.App-link {
+  text-decoration: none;
+  color: white;
+}

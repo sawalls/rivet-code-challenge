@@ -23,10 +23,10 @@ function RTKQueryWrapper({
     return <RTKQueryError error={error} operation={operation} />;
   } else if (isLoading) {
     return (
-      <div>
-        <LinearProgress />
+      <>
+        <LinearProgress sx={{ width: "100%" }} />
         <p>Loading... current operation: {operation}</p>
-      </div>
+      </>
     );
   } else if (!isSuccess) {
     throw new Error(

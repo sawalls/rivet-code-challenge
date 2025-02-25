@@ -9,48 +9,29 @@ interface AppFrameProps {
 
 function AppFrame({ children }: AppFrameProps) {
   return (
-    <div className="App" style={{ textAlign: "center" }}>
+    <div className="App">
       <header className="App-header">
-        <Box
-          sx={{
-            flexGrow: 1,
-            width: "50em",
-            boxSizing: "border-box",
-            padding: ".5em",
-            margin: "0 auto",
-            maxWidth: "100%",
-            alignItems: "center",
-          }}
-        >
-          <AppBar position="static">
-            <Toolbar sx={{ justifyContent: "center" }}>
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-              >
-                <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-                  <CameraEnhanceIcon />
-                  &nbsp;schalafile
-                </Link>
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-        </Box>{" "}
+        <Box className="App-header-box">
+          <HeaderBar />
+        </Box>
       </header>
-      <Box
-        sx={{
-          width: "32em",
-          boxSizing: "border-box",
-          padding: ".5em",
-          margin: "0 auto",
-          maxWidth: "100%",
-        }}
-      >
-        {children}
-      </Box>
+      <Box className="App-children-box">{children}</Box>
     </div>
+  );
+}
+
+function HeaderBar() {
+  return (
+    <AppBar position="static">
+      <Toolbar className="App-toolbar">
+        <IconButton size="large" edge="start" color="inherit" aria-label="menu">
+          <Link to="/" className="App-link">
+            <CameraEnhanceIcon />
+            &nbsp;schalafile
+          </Link>
+        </IconButton>
+      </Toolbar>
+    </AppBar>
   );
 }
 

@@ -13,15 +13,14 @@ const Status = () => {
     if (selectedId) {
       innerElement += ` Selected profile: ${selectedId}`;
     }
+  }
+  if (profilesResult.isError) {
+    innerElement = ""; // The error handlers will show a better error. Just get out of the way.
   } else {
     innerElement = "Loading profiles...";
   }
 
-  return (
-    <Box sx={{ fontSize: "12px", color: "#888", marginTop: "1em" }}>
-      {innerElement}
-    </Box>
-  );
+  return <Box sx={{ fontSize: "12px", color: "#888" }}>{innerElement}</Box>;
 };
 
 export { Status };
