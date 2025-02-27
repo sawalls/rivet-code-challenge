@@ -21,8 +21,8 @@ function RTKQueryError({
         case "FETCH_ERROR":
           components.push(
             <p>
-              "With this status it is possible the backend is not running or you
-              aren't pointing at it correctly"
+              With this status it is possible the backend is not running or you
+              aren't pointing at it correctly
             </p>
           );
           break;
@@ -34,9 +34,9 @@ function RTKQueryError({
           );
           components.push(
             <p>
-              "With this status it is possible the backend is not returning
-              valid JSON. See originalStatus above to see if the endpoint passed
-              or failed"
+              With this status it is possible the backend is not returning valid
+              JSON. See originalStatus above to see if the endpoint passed or
+              failed
             </p>
           );
           break;
