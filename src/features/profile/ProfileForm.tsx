@@ -6,7 +6,8 @@ import {
   styled,
   TextField,
 } from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import { ResponsiveStyleValue } from "@mui/system";
+import Grid, { GridSize } from "@mui/material/Grid2";
 import type { Profile } from "./profileUtils";
 import type { ProfileFormErrorInfo } from "./ProfileCreateEdit";
 import Photo from "./Photo";
@@ -25,6 +26,7 @@ const ProfileInput = ({
   required = false,
   type = "text",
   errorInfo = null,
+  size = { xs: 12, md: 6 },
 }: {
   path: keyof Profile;
   label: string;
@@ -33,13 +35,14 @@ const ProfileInput = ({
   required?: boolean;
   type?: string;
   errorInfo?: ProfileFormErrorInfo | null;
+  size?: ResponsiveStyleValue<GridSize> | undefined;
 }) => {
   let helperText = "";
   if (errorInfo?.path === path) {
     helperText = errorInfo.message;
   }
   return (
-    <FlexGrid size={{ xs: 12, md: 6 }}>
+    <FlexGrid size={size}>
       <FormLabel htmlFor={path} required={required}>
         {label}
       </FormLabel>
@@ -156,20 +159,7 @@ export function ProfileForm({
         type="email"
         errorInfo={errorInfo}
       />
-      <Grid size={4}>
-        <Photo profile={initialProfile} size="3.5em" />
-      </Grid>
-      <Grid size={8}>
-        <ProfileInput
-          path="photo"
-          label="Photo URL"
-          placeholder="fakeurl.fictitious.example/photo.jpg"
-          initialProfile={initialProfile}
-          type="url"
-          errorInfo={errorInfo}
-        />
-      </Grid>
-      <FlexGrid size={{ xs: 12 }}>
+      <FlexGrid size={12}>
         <FormLabel htmlFor="notes">Notes</FormLabel>
         <TextField
           id="notes"
@@ -180,7 +170,19 @@ export function ProfileForm({
           defaultValue={initialProfile?.notes}
         />
       </FlexGrid>
-      <FlexGrid size={{ xs: 12 }}>
+      <Grid size={12} display="flex" justifyContent={"center"}>
+        <Photo profile={initialProfile} size="20em" />
+      </Grid>
+      <ProfileInput
+        path="photo"
+        label="Photo URL"
+        placeholder="fakeurl.fictitious.example/photo.jpg"
+        initialProfile={initialProfile}
+        type="url"
+        errorInfo={errorInfo}
+        size={12}
+      />
+      <FlexGrid size={12}>
         <Button type="submit" variant="contained" loading={isLoading}>
           Submit
         </Button>
