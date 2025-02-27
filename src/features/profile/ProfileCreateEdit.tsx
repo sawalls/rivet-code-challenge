@@ -66,7 +66,10 @@ export function ProfileCreateEdit({
       }
     } catch (e) {
       if (e instanceof ValidationError) {
-        setFormErrorInfo({ path: e.path, message: capitalize(e.message) });
+        setFormErrorInfo({
+          path: e.path,
+          message: capitalize(e.message).replaceAll("_", " "),
+        });
         return;
       }
       throw e;

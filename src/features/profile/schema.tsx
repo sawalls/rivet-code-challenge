@@ -15,7 +15,7 @@ export const profileNoIdSchema: ObjectSchema<ProfileNoId> = object({
     .required()
     .matches(
       /\d.*\d.*\d.*\d.*\d.*\d.*\d.*\d.*\d.*\d/,
-      "Phone number must at least include 10 digits"
+      "Phone number must include 10 digits"
     )
     .max(255),
   email: string().required().max(255),
@@ -28,7 +28,7 @@ export const profileNoIdSchema: ObjectSchema<ProfileNoId> = object({
     .optional()
     .test(
       "len",
-      "State must be exactly 2 characters (or absent)",
+      "State must be 2 characters or absent",
       (val) => !val || val.length === 2
     ),
   zip: string()
