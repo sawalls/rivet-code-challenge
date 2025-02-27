@@ -1,6 +1,6 @@
+import type { TypedUseMutationResult } from "@reduxjs/toolkit/query/react";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { Profile, ProfileNoId } from "./profileUtils";
-import type { TypedUseMutationResult } from "@reduxjs/toolkit/query/react";
 
 const HOST = "http://localhost:3001";
 const API_BASE = `${HOST}/api/v1/`;

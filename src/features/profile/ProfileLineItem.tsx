@@ -1,6 +1,6 @@
-import { Box, Stack, Link } from "@mui/material";
-import { Profile } from "./profileUtils";
+import { Box, Link, Stack } from "@mui/material";
 import Photo from "./Photo";
+import { Profile } from "./profileUtils";
 
 type ProfileLineItemArgs = {
   profile: Profile;

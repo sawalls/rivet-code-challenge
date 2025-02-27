@@ -1,7 +1,7 @@
+import { Profile as ProfileComponent } from "../features/profile/Profile";
 import { useGetProfileByIdQuery } from "../features/profile/profileApi";
 import RTKQueryWrapper from "../features/util/RTKQueryWrapper";
 import { useProfileIdParam } from "../features/util/hooks";
-import { Profile as ProfileComponent } from "../features/profile/Profile";
 
 function Profile() {
   const id = useProfileIdParam();

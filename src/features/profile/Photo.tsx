@@ -1,6 +1,6 @@
 import { Avatar, Typography } from "@mui/material";
-import { Profile } from "./profileUtils";
 import { ResponsiveStyleValue } from "@mui/system";
+import { Profile } from "./profileUtils";
 
 type PhotoProps = {
   profile: Profile | undefined;

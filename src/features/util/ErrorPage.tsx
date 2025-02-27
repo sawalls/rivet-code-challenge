@@ -1,6 +1,6 @@
+import { Alert, AlertTitle, styled } from "@mui/material";
 import { isRouteErrorResponse, Link, useRouteError } from "react-router-dom";
 import AppFrame from "./AppFrame";
-import { Alert, AlertTitle, styled } from "@mui/material";
 
 function ErrorPage() {
   let error = useRouteError();
@@ -79,6 +79,6 @@ function ErrorReport({ error }: { error: unknown }) {
   return <ErrorAlert>{components}</ErrorAlert>;
 }
 
-export { ErrorReport, ErrorPage };
+export { ErrorPage, ErrorReport };
 
 export default ErrorPage;

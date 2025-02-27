@@ -1,10 +1,10 @@
+import { ProfileCreateEdit } from "../features/profile/ProfileCreateEdit";
 import {
   useEditProfileMutation,
   useGetProfileByIdQuery,
 } from "../features/profile/profileApi";
 import RTKQueryWrapper from "../features/util/RTKQueryWrapper";
 import { useProfileIdParam } from "../features/util/hooks";
-import { ProfileCreateEdit } from "../features/profile/ProfileCreateEdit";
 
 export const ProfileEdit = () => {
   const mutation = useEditProfileMutation();

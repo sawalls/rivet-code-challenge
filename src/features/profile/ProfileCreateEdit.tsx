@@ -1,13 +1,13 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UseCreateProfileMutation, UseEditProfileMutation } from "./profileApi";
-import type { Profile, ProfileNoId } from "./profileUtils";
-import RTKQueryError from "../util/RTKQueryError";
-import { ProfileForm } from "./ProfileForm";
-import { profileNoIdSchema } from "./schema";
 import { isEmail } from "validator";
 import isURL from "validator/lib/isURL";
 import { ValidationError } from "yup";
-import { useState } from "react";
+import RTKQueryError from "../util/RTKQueryError";
+import { UseCreateProfileMutation, UseEditProfileMutation } from "./profileApi";
+import { ProfileForm } from "./ProfileForm";
+import type { Profile, ProfileNoId } from "./profileUtils";
+import { profileNoIdSchema } from "./schema";
 
 // passing verb is technically redundant since you could check for id
 // but it's way more readable and useble in practice

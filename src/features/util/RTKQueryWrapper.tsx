@@ -1,6 +1,6 @@
+import { LinearProgress, styled } from "@mui/material";
 import { UseQueryHookResult } from "@reduxjs/toolkit/dist/query/react/buildHooks";
 import RTKQueryError from "./RTKQueryError";
-import { LinearProgress, styled } from "@mui/material";
 
 const HideableLinearProgress = styled(LinearProgress, {
   shouldForwardProp: (prop) => prop !== "hide",

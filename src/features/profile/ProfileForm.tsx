@@ -6,11 +6,11 @@ import {
   styled,
   TextField,
 } from "@mui/material";
-import { ResponsiveStyleValue } from "@mui/system";
 import Grid, { GridSize } from "@mui/material/Grid2";
-import type { Profile } from "./profileUtils";
-import type { ProfileFormErrorInfo } from "./ProfileCreateEdit";
+import { ResponsiveStyleValue } from "@mui/system";
 import Photo from "./Photo";
+import type { ProfileFormErrorInfo } from "./ProfileCreateEdit";
+import type { Profile } from "./profileUtils";
 
 const FlexGrid = styled(Grid)(() => ({
   display: "flex",

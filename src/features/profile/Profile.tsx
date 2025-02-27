@@ -1,7 +1,7 @@
-import { Profile as ProfileType } from "./profileUtils";
-import Photo from "./Photo";
 import { Box, Button, Stack, Typography } from "@mui/material";
+import Photo from "./Photo";
 import "./Profile.css";
+import { Profile as ProfileType } from "./profileUtils";
 
 export function Profile({ profile }: { profile: ProfileType }) {
   const {

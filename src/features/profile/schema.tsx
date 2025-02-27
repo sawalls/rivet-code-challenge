@@ -1,4 +1,4 @@
-import { string, object, ObjectSchema } from "yup";
+import { object, ObjectSchema, string } from "yup";
 import { ProfileNoId } from "./profileUtils";
 
 export const posIntSchema = string()

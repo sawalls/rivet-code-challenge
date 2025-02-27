@@ -1,5 +1,5 @@
-import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { SerializedError } from "@reduxjs/toolkit";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { EmphasizedTitle, ErrorAlert } from "./ErrorPage";
 
 function RTKQueryError({

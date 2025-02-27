@@ -1,4 +1,4 @@
-import { Stack, Box, Link } from "@mui/material";
+import { Box, Link, Stack } from "@mui/material";
 import { ProfileLineItem } from "./ProfileLineItem";
 import type { Profile } from "./profileUtils";
 
