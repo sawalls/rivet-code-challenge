@@ -52,7 +52,6 @@ export default function Photo({ profile, size }: PhotoProps) {
         <Typography
           sx={{
             fontSize: "2em",
-            float: "left", // hack to break out of the underline from Link
           }}
         >{`${first_name[0]}${last_name[0]}`}</Typography>
       )}

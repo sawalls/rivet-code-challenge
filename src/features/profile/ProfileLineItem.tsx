@@ -1,6 +1,5 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Link } from "@mui/material";
 import { Profile } from "./profileUtils";
-import { Link } from "react-router-dom";
 import Photo from "./Photo";
 
 type ProfileLineItemArgs = {
@@ -9,7 +8,7 @@ type ProfileLineItemArgs = {
 
 const ProfileLineItem = ({ profile }: ProfileLineItemArgs) => {
   return (
-    <Link to={`/profile/${profile.id}`}>
+    <Link href={`/profile/${profile.id}`} sx={{ textDecoration: "none" }}>
       <Box
         sx={{
           backgroundColor: "white",
