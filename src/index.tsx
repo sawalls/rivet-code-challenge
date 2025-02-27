@@ -7,6 +7,7 @@ import { ErrorReport } from "./features/util/ErrorPage";
 import "./index.css";
 import { createRouter } from "./routes/index";
 import store from "./store";
+import { ReactRouterThemeProvider } from "./features/util/ReactRouterThemeProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -26,7 +27,9 @@ function AppRouterProvider() {
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <AppRouterProvider />
+      <ReactRouterThemeProvider>
+        <AppRouterProvider />
+      </ReactRouterThemeProvider>
     </Provider>
   </React.StrictMode>
 );
