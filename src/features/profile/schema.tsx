@@ -15,20 +15,20 @@ export const profileNoIdSchema: ObjectSchema<ProfileNoId> = object({
     .required()
     .matches(
       /\d.*\d.*\d.*\d.*\d.*\d.*\d.*\d.*\d.*\d/,
-      "phone number must at least include 10 digits"
+      "Phone number must at least include 10 digits"
     )
     .max(255),
   email: string().required().max(255),
   address: string()
     .required()
-    .matches(/\d/, "address must contain a number")
+    .matches(/\d/, "Address must contain a number")
     .max(255),
   city: string().required().max(255),
   state: string()
     .optional()
     .test(
       "len",
-      "state must be exactly 2 characters (or absent)",
+      "State must be exactly 2 characters (or absent)",
       (val) => !val || val.length === 2
     ),
   zip: string()

@@ -8,6 +8,7 @@ import { UseCreateProfileMutation, UseEditProfileMutation } from "./profileApi";
 import { ProfileForm } from "./ProfileForm";
 import type { Profile, ProfileNoId } from "./profileUtils";
 import { profileNoIdSchema } from "./schema";
+import { capitalize } from "@mui/material";
 
 // passing verb is technically redundant since you could check for id
 // but it's way more readable and useble in practice
@@ -65,7 +66,7 @@ export function ProfileCreateEdit({
       }
     } catch (e) {
       if (e instanceof ValidationError) {
-        setFormErrorInfo({ path: e.path, message: e.message });
+        setFormErrorInfo({ path: e.path, message: capitalize(e.message) });
         return;
       }
       throw e;
