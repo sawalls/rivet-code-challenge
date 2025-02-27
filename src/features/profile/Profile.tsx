@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
 import { Profile as ProfileType } from "./profileUtils";
+import Photo from "./Photo";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import "./Profile.css";
 
-// TODO: add typing here when it's added on to profileAPI
 export function Profile({ profile }: { profile: ProfileType }) {
   const {
     id,
@@ -13,27 +14,47 @@ export function Profile({ profile }: { profile: ProfileType }) {
     city,
     state,
     zip,
-    photo,
     notes,
   } = profile;
 
   return (
-    <div>
-      <h2>
+    <Stack
+      spacing={1}
+      sx={{
+        justifyContent: "center",
+        padding: "1em",
+      }}
+    >
+      <Typography variant="h2" component="h2" sx={{ textAlign: "center" }}>
         {first_name} {last_name}
-      </h2>
-      <p>
-        <Link to={`/profile/${id}/edit`}>Edit this profile</Link>
-      </p>
-      <img src={photo} alt="This profile's avatar" />
-      <p>{address}</p>
-      <p>
-        {city} {state} {zip}
-      </p>
-      <p>
-        Contact: {phone} {email}
-      </p>
-      <p>Notes: {notes}</p>
-    </div>
+      </Typography>
+      <Photo profile={profile} size={"20em"} />
+      <Button variant="contained" color="primary" href={`/profile/${id}/edit`}>
+        Edit this profile
+      </Button>
+      <Box
+        sx={{
+          padding: "1em",
+          borderRadius: "4px",
+          backgroundColor: "#f5f5f5",
+        }}
+      >
+        <dl className="profile-details">
+          <dt>Address</dt>
+          <dd>
+            <p>{address}</p>
+            <p>
+              {city} {state} {zip}
+            </p>
+          </dd>
+          <dt>Phone</dt>
+          <dd>{phone}</dd>
+          <dt>Email</dt>
+          <dd>{email}</dd>
+          <dt>Notes</dt>
+          <dd>{notes}</dd>
+        </dl>
+      </Box>
+    </Stack>
   );
 }

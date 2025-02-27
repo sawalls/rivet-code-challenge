@@ -1,6 +1,6 @@
 # Schala Walls's RIVET coding challenge solution
 
-This is a partially completed solution to the coding challenge given to me by Alan et al. It's a vite app so all the regular vite things apply.
+This is a souped up version of my original solution to the coding challenge given to me by Alan et al. It's a vite app so all the regular vite things apply.
 
 It's always very important to me that browser history and URLs function correctly even in a single page app, so I've made use of [React Router](https://reactrouter.com/en/main). That led to some pretty specific implementation details so feel free to ask any questions.
 
@@ -21,7 +21,7 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.

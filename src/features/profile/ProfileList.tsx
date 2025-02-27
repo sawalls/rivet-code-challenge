@@ -1,5 +1,4 @@
-import { Stack, Box } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Stack, Box, Link } from "@mui/material";
 import { ProfileLineItem } from "./ProfileLineItem";
 import type { Profile } from "./profileUtils";
 
@@ -15,7 +14,7 @@ export default function ProfileListWrapped({
 
   return (
     <Stack spacing={1} sx={{ textAlign: "left" }}>
-      <Link to={"/profile/create"}>
+      <Link href={"/profile/create"} underline="none">
         <Box sx={{ boxSizing: "border-box" }}>
           <Box
             sx={{
@@ -26,6 +25,7 @@ export default function ProfileListWrapped({
               borderRadius: "4px",
               cursor: "pointer",
               lineHeight: "1.2em",
+              textAlign: "center",
             }}
           >
             Create new profile: ➕

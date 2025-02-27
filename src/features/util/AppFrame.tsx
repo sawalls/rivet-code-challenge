@@ -27,7 +27,7 @@ function HeaderBar() {
         <IconButton size="large" edge="start" color="inherit" aria-label="menu">
           <Link to="/" className="App-link">
             <CameraEnhanceIcon />
-            &nbsp;schalafile
+            &nbsp;schalfile
           </Link>
         </IconButton>
       </Toolbar>
