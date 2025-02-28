@@ -1,0 +1,48 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "npm start (vite)",
+      "type": "shell",
+      "command": ["npm start '--' --port ${config:vitePort}"],
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "pattern": [
+            {
+              "regexp": ".",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".",
+            "endsPattern": "."
+          }
+        }
+      ]
+    },
+    {
+      "label": "terminate npm start (vite)",
+      "command": ["${input:terminate-npm}"],
+      "type": "process",
+      "problemMatcher": [],
+      "dependsOn": ["close terminal"]
+    },
+    {
+      "label": "close terminal",
+      "type": "process",
+      "command": "${command:workbench.action.closePanel}"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "terminate-npm",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "npm start (vite)"
+    }
+  ]
+}

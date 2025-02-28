@@ -144,7 +144,7 @@ deploy_history.txt
 *.sw*
 
 # for all the vscode mortals
-/.vscode
+# /.vscode # this is commented out because we want to keep the .vscode folder - sawalls
 *.code-workspace
 /logs
 
