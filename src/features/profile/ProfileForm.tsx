@@ -9,11 +9,13 @@ import Grid, { GridSize } from "@mui/material/Grid2";
 import { ResponsiveStyleValue } from "@mui/system";
 import Photo from "./Photo";
 import type { FormErrorInfo } from "./ProfileCreateEdit";
-import type { Profile } from "./profileUtils";
+import type { Profile, ProfileNoId } from "./profileUtils";
 
 export function ProfileForm({
   handleSubmit,
-  initialProfile,
+  defaultValue,
+  value,
+  onChange,
   isLoading,
   errorInfo,
 }: Readonly<FormProps>) {
@@ -30,12 +32,14 @@ export function ProfileForm({
         <Input
           key={field.path}
           fieldSpec={field}
-          defaultValue={initialProfile?.[field.path]}
+          defaultValue={defaultValue?.[field.path]}
+          value={value[field.path]}
+          onChange={onChange}
           errorInfo={errorInfo}
         />
       ))}
       <Grid size={12} display="flex" justifyContent={"center"}>
-        <Photo profile={initialProfile} size="20em" />
+        <Photo profile={defaultValue} size="20em" />
       </Grid>
       <FlexGrid size={12}>
         <Button type="submit" variant="contained" loading={isLoading}>
@@ -53,7 +57,7 @@ const FlexGrid = styled(Grid)(() => ({
 }));
 
 interface FieldSpec {
-  path: keyof Profile;
+  path: keyof ProfileNoId;
   label: string;
   placeholder: string;
   required?: boolean;
@@ -65,12 +69,16 @@ interface FieldSpec {
 interface InputProps {
   fieldSpec: FieldSpec;
   defaultValue: unknown;
+  value: unknown;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   errorInfo?: FormErrorInfo | null;
 }
 
 const Input = ({
   fieldSpec: field,
   defaultValue,
+  value,
+  onChange,
   errorInfo = null,
 }: InputProps) => {
   const {
@@ -97,6 +105,8 @@ const Input = ({
         placeholder={placeholder}
         size="small"
         defaultValue={defaultValue}
+        value={value}
+        onChange={onChange}
         required={required}
         type={type}
         error={!!helperText}
@@ -180,7 +190,9 @@ const inputFields: FieldSpec[] = [
 
 interface FormProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  initialProfile?: Profile | undefined;
+  defaultValue?: Profile | undefined;
+  value: Partial<ProfileNoId>;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isLoading: boolean;
   errorInfo: FormErrorInfo | null;
 }

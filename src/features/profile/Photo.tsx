@@ -1,9 +1,9 @@
 import { Avatar, Typography } from "@mui/material";
 import { ResponsiveStyleValue } from "@mui/system";
-import { Profile } from "./profileUtils";
+import { ProfileNoId } from "./profileUtils";
 
 type PhotoProps = {
-  profile: Profile | undefined;
+  profile?: ProfileNoId | undefined;
   size: ResponsiveStyleValue<string | number>;
 };
 
