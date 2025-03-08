@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import { useUnsafeProfileIdParam } from "../util/hooks";
-import { useGetProfilesQuery } from "./profileApi";
+import { useUnsafeProfileIdParam } from "./hooks";
+import { useGetProfilesQuery } from "../profile/profileApi";
 
 const Status = () => {
   const profilesResult = useGetProfilesQuery();

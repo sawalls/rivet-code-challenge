@@ -5,7 +5,7 @@ import isURL from "validator/lib/isURL";
 import { ValidationError } from "yup";
 import RTKQueryError from "../util/RTKQueryError";
 import { UseCreateProfileMutation, UseEditProfileMutation } from "./profileApi";
-import { Form } from "./ProfileForm";
+import { ProfileForm } from "./ProfileForm";
 import type { Profile, ProfileNoId } from "./profileUtils";
 import { profileNoIdSchema } from "./schema";
 import { capitalize } from "@mui/material";
@@ -94,7 +94,7 @@ export function ProfileCreateEdit({
   } else {
     // isUninitialized || isLoading
     return (
-      <Form
+      <ProfileForm
         handleSubmit={handleSubmit}
         initialProfile={initialProfile}
         isLoading={isLoading}

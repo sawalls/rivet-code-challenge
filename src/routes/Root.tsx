@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-import { Status } from "../features/profile/Status";
+import { Status } from "../features/util/Status";
 import AppFrame from "../features/util/AppFrame";
 
 function Root() {

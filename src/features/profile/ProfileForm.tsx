@@ -11,6 +11,41 @@ import Photo from "./Photo";
 import type { FormErrorInfo } from "./ProfileCreateEdit";
 import type { Profile } from "./profileUtils";
 
+export function ProfileForm({
+  handleSubmit,
+  initialProfile,
+  isLoading,
+  errorInfo,
+}: Readonly<FormProps>) {
+  return (
+    <Grid
+      component="form"
+      container
+      spacing={3}
+      onSubmit={handleSubmit}
+      noValidate
+      autoComplete="off"
+    >
+      {inputFields.map((field) => (
+        <Input
+          key={field.path}
+          fieldSpec={field}
+          defaultValue={initialProfile?.[field.path]}
+          errorInfo={errorInfo}
+        />
+      ))}
+      <Grid size={12} display="flex" justifyContent={"center"}>
+        <Photo profile={initialProfile} size="20em" />
+      </Grid>
+      <FlexGrid size={12}>
+        <Button type="submit" variant="contained" loading={isLoading}>
+          Submit
+        </Button>
+      </FlexGrid>
+    </Grid>
+  );
+}
+
 const FlexGrid = styled(Grid)(() => ({
   display: "flex",
   flexDirection: "column",
@@ -148,39 +183,4 @@ interface FormProps {
   initialProfile?: Profile | undefined;
   isLoading: boolean;
   errorInfo: FormErrorInfo | null;
-}
-
-export function Form({
-  handleSubmit,
-  initialProfile,
-  isLoading,
-  errorInfo,
-}: Readonly<FormProps>) {
-  return (
-    <Grid
-      component="form"
-      container
-      spacing={3}
-      onSubmit={handleSubmit}
-      noValidate
-      autoComplete="off"
-    >
-      {inputFields.map((field) => (
-        <Input
-          key={field.path}
-          fieldSpec={field}
-          defaultValue={initialProfile?.[field.path]}
-          errorInfo={errorInfo}
-        />
-      ))}
-      <Grid size={12} display="flex" justifyContent={"center"}>
-        <Photo profile={initialProfile} size="20em" />
-      </Grid>
-      <FlexGrid size={12}>
-        <Button type="submit" variant="contained" loading={isLoading}>
-          Submit
-        </Button>
-      </FlexGrid>
-    </Grid>
-  );
 }
