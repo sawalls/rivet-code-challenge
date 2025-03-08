@@ -30,7 +30,7 @@ type ProfileCreateEditProps = CreateSet | EditSet;
 
 type ProfileVerb = ProfileCreateEditProps["verb"];
 
-export type ProfileFormErrorInfo = {
+export type FormErrorInfo = {
   path: string | undefined;
   message: string;
 };
@@ -39,24 +39,27 @@ export function ProfileCreateEdit({
   mutation,
   verb,
   initialProfile,
-  id,
 }: Readonly<ProfileCreateEditProps>) {
   const navigate = useNavigate();
-  const [formErrorInfo, setFormErrorInfo] =
-    useState<ProfileFormErrorInfo | null>(null);
+  const [formErrorInfo, setFormErrorInfo] = useState<FormErrorInfo | null>(
+    null
+  );
+  const [formData, setFormData] = useState<Partial<ProfileNoId>>(
+    initialProfile || {}
+  );
 
   // pulling mutation[0] inside of the verb below instead of here check helps it typecheck
   const { isLoading, isError, error } = mutation[1];
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
     // First validate the shape (redundant but I wanna show off)
     let profileNoId: ProfileNoId;
     try {
-      profileNoId = await profileNoIdSchema.validate(
-        Object.fromEntries(formData.entries())
-      );
+      profileNoId = await profileNoIdSchema.validate(formData, {
+        // TODO: make this work and show all errors
+        // abortEarly: false,
+      });
       // Then validate some string rules
       if (!isEmail(profileNoId.email)) {
         throw new ValidationError("Invalid email address", undefined, "email");
@@ -79,12 +82,15 @@ export function ProfileCreateEdit({
     if (verb === "create") {
       result = await mutation[0](profileNoId);
     } else {
-      result = await mutation[0]({ id: id, profile: profileNoId });
+      result = await mutation[0]({
+        id: initialProfile.id,
+        profile: profileNoId,
+      });
     }
 
     if (!("error" in result)) {
       // TODO: docs suggest there's some more idiomatic way to do this than useNavigate
-      navigate(id ? `/profile/${id}` : "/");
+      navigate(initialProfile ? `/profile/${initialProfile.id}` : "/");
     }
   };
 
@@ -95,7 +101,14 @@ export function ProfileCreateEdit({
     return (
       <ProfileForm
         handleSubmit={handleSubmit}
-        initialProfile={initialProfile}
+        defaultValue={initialProfile}
+        value={formData}
+        onChange={(event) => {
+          setFormErrorInfo(null);
+          const { name, value } = event.target;
+          const field = name as keyof ProfileNoId;
+          setFormData((prev) => ({ ...prev, [field]: value })); // Isn't there tech for allowing mutable state?
+        }}
         isLoading={isLoading}
         errorInfo={formErrorInfo}
       />
