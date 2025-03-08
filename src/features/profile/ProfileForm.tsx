@@ -4,12 +4,11 @@ import {
   FormLabel,
   OutlinedInput,
   styled,
-  TextField,
 } from "@mui/material";
 import Grid, { GridSize } from "@mui/material/Grid2";
 import { ResponsiveStyleValue } from "@mui/system";
 import Photo from "./Photo";
-import type { ProfileFormErrorInfo } from "./ProfileCreateEdit";
+import type { FormErrorInfo } from "./ProfileCreateEdit";
 import type { Profile } from "./profileUtils";
 
 const FlexGrid = styled(Grid)(() => ({
@@ -18,25 +17,36 @@ const FlexGrid = styled(Grid)(() => ({
   position: "relative",
 }));
 
-const ProfileInput = ({
-  path,
-  label,
-  placeholder,
-  initialProfile,
-  required = false,
-  type = "text",
-  errorInfo = null,
-  size = { xs: 12, md: 6 },
-}: {
+interface FieldSpec {
   path: keyof Profile;
   label: string;
   placeholder: string;
-  initialProfile?: Profile;
   required?: boolean;
   type?: string;
-  errorInfo?: ProfileFormErrorInfo | null;
   size?: ResponsiveStyleValue<GridSize> | undefined;
-}) => {
+  rows?: number;
+}
+
+interface InputProps {
+  fieldSpec: FieldSpec;
+  defaultValue: unknown;
+  errorInfo?: FormErrorInfo | null;
+}
+
+const Input = ({
+  fieldSpec: field,
+  defaultValue,
+  errorInfo = null,
+}: InputProps) => {
+  const {
+    path,
+    label,
+    placeholder,
+    required = false,
+    type = "text",
+    size = { xs: 12, md: 6 },
+    rows = 1,
+  } = field;
   let helperText = "";
   if (errorInfo?.path === path) {
     helperText = errorInfo.message;
@@ -51,10 +61,12 @@ const ProfileInput = ({
         name={path}
         placeholder={placeholder}
         size="small"
-        defaultValue={initialProfile?.[path]}
+        defaultValue={defaultValue}
         required={required}
         type={type}
         error={!!helperText}
+        multiline={rows > 1}
+        rows={rows}
       />
       <FormHelperText
         error={!!helperText}
@@ -71,7 +83,7 @@ const ProfileInput = ({
   );
 };
 
-const inputFields = [
+const inputFields: FieldSpec[] = [
   {
     path: "first_name" as const,
     label: "First Name",
@@ -112,21 +124,38 @@ const inputFields = [
     required: true,
     type: "email",
   },
+  {
+    path: "notes" as const,
+    label: "Notes",
+    placeholder: "Your freeform notes go here",
+    required: false,
+    type: "text",
+    rows: 4,
+    size: 12,
+  },
+  {
+    path: "photo" as const,
+    label: "Photo URL",
+    placeholder: "fakeurl.fictitious.example/photo.jpg",
+    required: false,
+    type: "url",
+    size: 12,
+  },
 ];
 
-interface ProfileFormProps {
+interface FormProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   initialProfile?: Profile | undefined;
   isLoading: boolean;
-  errorInfo: ProfileFormErrorInfo | null;
+  errorInfo: FormErrorInfo | null;
 }
 
-export function ProfileForm({
+export function Form({
   handleSubmit,
   initialProfile,
   isLoading,
   errorInfo,
-}: Readonly<ProfileFormProps>) {
+}: Readonly<FormProps>) {
   return (
     <Grid
       component="form"
@@ -137,40 +166,16 @@ export function ProfileForm({
       autoComplete="off"
     >
       {inputFields.map((field) => (
-        <ProfileInput
+        <Input
           key={field.path}
-          path={field.path}
-          label={field.label}
-          placeholder={field.placeholder}
-          initialProfile={initialProfile}
-          required={field.required}
-          type={field.type}
+          fieldSpec={field}
+          defaultValue={initialProfile?.[field.path]}
           errorInfo={errorInfo}
         />
       ))}
-      <FlexGrid size={12}>
-        <FormLabel htmlFor="notes">Notes</FormLabel>
-        <TextField
-          id="notes"
-          name="notes"
-          placeholder="Your freeform notes go here"
-          multiline
-          rows={4}
-          defaultValue={initialProfile?.notes}
-        />
-      </FlexGrid>
       <Grid size={12} display="flex" justifyContent={"center"}>
         <Photo profile={initialProfile} size="20em" />
       </Grid>
-      <ProfileInput
-        path="photo"
-        label="Photo URL"
-        placeholder="fakeurl.fictitious.example/photo.jpg"
-        initialProfile={initialProfile}
-        type="url"
-        errorInfo={errorInfo}
-        size={12}
-      />
       <FlexGrid size={12}>
         <Button type="submit" variant="contained" loading={isLoading}>
           Submit

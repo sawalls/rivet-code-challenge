@@ -5,7 +5,7 @@ import isURL from "validator/lib/isURL";
 import { ValidationError } from "yup";
 import RTKQueryError from "../util/RTKQueryError";
 import { UseCreateProfileMutation, UseEditProfileMutation } from "./profileApi";
-import { ProfileForm } from "./ProfileForm";
+import { Form } from "./ProfileForm";
 import type { Profile, ProfileNoId } from "./profileUtils";
 import { profileNoIdSchema } from "./schema";
 import { capitalize } from "@mui/material";
@@ -30,7 +30,7 @@ type ProfileCreateEditProps = CreateSet | EditSet;
 
 type ProfileVerb = ProfileCreateEditProps["verb"];
 
-export type ProfileFormErrorInfo = {
+export type FormErrorInfo = {
   path: string | undefined;
   message: string;
 };
@@ -42,8 +42,9 @@ export function ProfileCreateEdit({
   id,
 }: Readonly<ProfileCreateEditProps>) {
   const navigate = useNavigate();
-  const [formErrorInfo, setFormErrorInfo] =
-    useState<ProfileFormErrorInfo | null>(null);
+  const [formErrorInfo, setFormErrorInfo] = useState<FormErrorInfo | null>(
+    null
+  );
 
   // pulling mutation[0] inside of the verb below instead of here check helps it typecheck
   const { isLoading, isError, error } = mutation[1];
@@ -93,7 +94,7 @@ export function ProfileCreateEdit({
   } else {
     // isUninitialized || isLoading
     return (
-      <ProfileForm
+      <Form
         handleSubmit={handleSubmit}
         initialProfile={initialProfile}
         isLoading={isLoading}
