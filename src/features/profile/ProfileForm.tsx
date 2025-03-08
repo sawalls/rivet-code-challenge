@@ -71,6 +71,49 @@ const ProfileInput = ({
   );
 };
 
+const inputFields = [
+  {
+    path: "first_name" as const,
+    label: "First Name",
+    placeholder: "First Name",
+    required: true,
+  },
+  {
+    path: "last_name" as const,
+    label: "Last Name",
+    placeholder: "Last Name",
+    required: true,
+  },
+  {
+    path: "address" as const,
+    label: "Address",
+    placeholder: "221B Replace Me",
+    required: true,
+  },
+  {
+    path: "city" as const,
+    label: "City",
+    placeholder: "Faketown",
+    required: true,
+  },
+  { path: "state" as const, label: "State", placeholder: "ZZ", required: true },
+  { path: "zip" as const, label: "Zip", placeholder: "11111", required: true },
+  {
+    path: "phone" as const,
+    label: "Phone",
+    placeholder: "(555) 555-0199",
+    required: true,
+    type: "tel",
+  },
+  {
+    path: "email" as const,
+    label: "Email",
+    placeholder: "replace_this@fictitious.example",
+    required: true,
+    type: "email",
+  },
+];
+
 interface ProfileFormProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   initialProfile?: Profile | undefined;
@@ -93,72 +136,18 @@ export function ProfileForm({
       noValidate
       autoComplete="off"
     >
-      <ProfileInput
-        path="first_name"
-        label="First Name"
-        placeholder="First Name"
-        initialProfile={initialProfile}
-        required
-        errorInfo={errorInfo}
-      />
-      <ProfileInput
-        path="last_name"
-        label="Last Name"
-        placeholder="Last Name"
-        initialProfile={initialProfile}
-        required
-        errorInfo={errorInfo}
-      />
-      <ProfileInput
-        path="address"
-        label="Address"
-        placeholder="221B Replace Me"
-        initialProfile={initialProfile}
-        required
-        errorInfo={errorInfo}
-      />
-      <ProfileInput
-        path="city"
-        label="City"
-        placeholder="Faketown"
-        initialProfile={initialProfile}
-        required
-        errorInfo={errorInfo}
-      />
-      <ProfileInput
-        path="state"
-        label="State"
-        placeholder="ZZ"
-        initialProfile={initialProfile}
-        required
-        errorInfo={errorInfo}
-      />
-      <ProfileInput
-        path="zip"
-        label="Zip"
-        placeholder="11111"
-        initialProfile={initialProfile}
-        required
-        errorInfo={errorInfo}
-      />
-      <ProfileInput
-        path="phone"
-        label="Phone"
-        placeholder="(555) 555-0199"
-        initialProfile={initialProfile}
-        required
-        type="tel"
-        errorInfo={errorInfo}
-      />
-      <ProfileInput
-        path="email"
-        label="Email"
-        placeholder="replace_this@fictitious.example"
-        initialProfile={initialProfile}
-        required
-        type="email"
-        errorInfo={errorInfo}
-      />
+      {inputFields.map((field) => (
+        <ProfileInput
+          key={field.path}
+          path={field.path}
+          label={field.label}
+          placeholder={field.placeholder}
+          initialProfile={initialProfile}
+          required={field.required}
+          type={field.type}
+          errorInfo={errorInfo}
+        />
+      ))}
       <FlexGrid size={12}>
         <FormLabel htmlFor="notes">Notes</FormLabel>
         <TextField
